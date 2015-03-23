@@ -1,0 +1,43 @@
+package Semant.Types;
+
+//import Semant.Visitor;
+
+public class FUNCTION extends Type{
+	
+	public RECORD formals;
+	public Semant.Symbol.Symbol name;
+	public Type result;
+	public Type self;
+	
+	public FUNCTION(Semant.Symbol.Symbol n, Type s, RECORD f, Type r){
+		this.name = n;
+		this.formals = f;
+		this.result = r;
+		this.self = s;
+	}
+	
+	public FIELD addFormal(Type type, Semant.Symbol.Symbol n){
+		;
+		return null;
+	}
+
+	@Override
+	public void accept(Semant.Visit.Visitor v) {
+		v.visit(this);
+	}
+	
+	public Semant.Types.Type accept(Semant.Visit.Visitor2 v) { return v.visit(this); }
+
+	@Override
+	public boolean coerceTo(Type t) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
