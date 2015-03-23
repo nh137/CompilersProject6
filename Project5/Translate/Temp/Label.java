@@ -1,0 +1,20 @@
+package Translate.Temp;
+import Translate.Symbol.*;
+public class Label {
+	private static int count;
+	private String name;
+	public Label(){
+		name = "L" + count++;
+	}
+	public Label(String s){
+		name = s;
+	}
+	public Label(Symbol s){
+		//this may be incorrect
+		name = s.toString();
+	}
+	
+	public String toString(){
+		return new String(name + ":");
+	}
+}
