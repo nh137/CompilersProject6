@@ -29,14 +29,9 @@ public class CJUMP extends Stm{
 	
 	@Override
 	public void accept(IntVisitor v, int d) {
+		// TODO Auto-generated method stub
 		v.visit(this, d);
 		
-	}
-
-	public static int notRel(int relop)
-	{
-		//TODO
-		return 0;
 	}
 
 }

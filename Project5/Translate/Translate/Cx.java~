@@ -4,7 +4,7 @@ import Translate.Temp.Label;
 import Translate.Temp.Temp;
 import Translate.Tree.*;
 
-public abstract class Cx extends Exp{
+abstract public class Cx extends Exp{
 	
 	Cx(){
 		;
