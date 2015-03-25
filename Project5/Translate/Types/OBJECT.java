@@ -1,0 +1,42 @@
+package Translate.Types;
+
+//import Semant.Visitor;
+
+public class OBJECT extends Type{
+	
+	public RECORD fields;
+	public RECORD methods;
+	public CLASS myClass;
+	
+	public OBJECT(CLASS m){
+		this.myClass = m;
+		methods = new RECORD();
+		fields = new RECORD();
+	}
+	
+	public OBJECT(CLASS m, RECORD meth, RECORD f){
+		this.fields = f;
+		this.methods = meth;
+		this.myClass = m;
+	}
+
+	@Override
+	public void accept(Semant.Visit.Visitor v) {
+		v.visit(this);
+		
+	}
+	public Semant.Types.Type accept(Semant.Visit.Visitor2 v) { return v.visit(this); }
+
+	@Override
+	public boolean coerceTo(Type t) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}
