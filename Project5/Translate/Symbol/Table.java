@@ -25,12 +25,14 @@ public class Table{
 		return h;
 	}
 	
-	public void put(Symbol key, Object value){
+	public void put(String s, Object value){
+		Symbol key = Symbol.symbol(s);
 		int i = Math.abs(hash(key)%256);
 		this.table[i] = new Bucket(key, value, this.table[i]);
 	}
 
-	public Object get(Symbol key){
+	public Object get(String s){
+		Symbol key = Symbol.symbol(s);
 		int i = Math.abs(hash(key)%256);
 		for (Bucket b = table[i]; b != null; b = b.next){
 			if (key.toString().equals(b.key.toString()))

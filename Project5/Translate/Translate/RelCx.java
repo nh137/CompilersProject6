@@ -11,9 +11,9 @@ import Translate.Tree.Stm;
 import Translate.Tree.TEMP;
 
 public class RelCx extends Cx{
-	private Exp le;
-	private int operator;
-	private Exp re;
+	public  Exp le;
+	public  int operator;
+	public  Exp re;
 	
 	public RelCx(int op, Exp l, Exp r){
 		operator = op;
@@ -21,16 +21,16 @@ public class RelCx extends Cx{
 		re = r;
 	}
 	@Override
-	Stm unCx(Label t, Label f) {
+	public Stm unCx(Label t, Label f) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 	@Override
-	Translate.Tree.Exp unEx() {
+	public Translate.Tree.Exp unEx() {
 		return null;
 	}
 	
-	Translate.Tree.Stm unNx(){
+	public Translate.Tree.Stm unNx(){
 		return null;
 	}
 

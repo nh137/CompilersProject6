@@ -1,6 +1,6 @@
-package Semant.Types;
+package Translate.Types;
 
-//import Semant.Visitor;
+//import Translate.Visitor;
 
 public class STRING extends Type{
 	
@@ -9,7 +9,7 @@ public class STRING extends Type{
 	}
 
 	@Override
-	public void accept(Semant.Visit.Visitor v) {
+	public void accept(Translate.Visit.Visitor v) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -1,6 +1,6 @@
-package Semant;
+package Translate;
 
-import Semant.Types.*;
+import Translate.Types.*;
 
 
 

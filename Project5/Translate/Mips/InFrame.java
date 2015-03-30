@@ -3,7 +3,7 @@ import Translate.Frame.*;
 import Translate.Temp.*;
 import Translate.Tree.Exp;
 public class InFrame extends Access{
-	int offset;
+	public int offset;
 	
 	public InFrame(int o){
 		offset = o;

@@ -1,26 +1,26 @@
 package Translate.Types;
 
-//import Semant.Visitor;
+//import Translate.Visitor;
 
 public class CLASS extends Type{
 	
 	public RECORD fields;
 	public OBJECT instance;
 	public RECORD methods;
-	public Semant.Symbol.Symbol name;
+	public String name;
 	public CLASS parent;
 	
-	public CLASS(Semant.Symbol.Symbol s){
+	public CLASS(String s){
 		this.name = s;
 		
 	}
 
 	@Override
-	public void accept(Semant.Visit.Visitor v) {
+	public void accept(Translate.Visit.Visitor v) {
 		v.visit(this);
 	}
 	
-	public Semant.Types.Type accept(Semant.Visit.Visitor2 v) { return v.visit(this); }
+	public Translate.Translate.Exp accept(Translate.Translator.Translator  v) { return v.visit(this); }
 
 	@Override
 	public

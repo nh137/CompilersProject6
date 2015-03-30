@@ -28,8 +28,8 @@ public class CJUMP extends Stm{
 	}
 	
 	@Override
-	public void accept(IntVisitor v, int d) {
-		v.visit(this, d);
+	public void accept(IntVisitor v) {
+		v.visit(this);
 		
 	}
 

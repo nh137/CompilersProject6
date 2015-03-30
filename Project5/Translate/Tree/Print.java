@@ -1,12 +1,12 @@
 package Translate.Tree;
 public class Print implements IntVisitor{
-    private java.io.PrintStream out;
+    private java.io.PrintWriter out;
     private int indent = 0;
     private Stm s;
 
-    public Print(){this.(System.out);}
+    public Print(){this.out = new java.io.PrintWriter(System.out);}
 
-    public Print(java.io.PrintStream out, Stm s){
+    public Print(java.io.PrintWriter out, Stm s){
 	this.out = out;
 	this.s = s;
     }
@@ -126,7 +126,7 @@ public void visit(NAME n) {
     out.print("NAME"+n.label.name+")");
 }
 @Override
-public void visit(SEQ n, int s) {
+public void visit(SEQ n) {
 // TODO Auto-generated method stub
     out.println("SEQ(");
     indent += 2; printIndent();
@@ -137,7 +137,7 @@ public void visit(SEQ n, int s) {
     out.println(")");
 }
 @Override
-public void visit(TEMP n, int s) {
+public void visit(TEMP n) {
 // TODO Auto-generated method stub
  out.print("TEMP("+n.temp.num+")");
 }

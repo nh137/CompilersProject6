@@ -6,18 +6,18 @@ import Translate.Tree.*;
 
 public class Ex extends Exp{
 	
-	Translate.Tree.Exp exp;
-	Ex(Translate.Tree.Exp e) {exp=e;}
+	public Translate.Tree.Exp exp;
+	public Ex(Translate.Tree.Exp e) {exp=e;}
 	
-	Translate.Tree.Exp unEx() {return exp;}
+	public Translate.Tree.Exp unEx() {return exp;}
 	
-	Stm unNx() { 
+	public Stm unNx() { 
 		return new EXP(exp);
 	}
 
 	@Override
 	
-	Stm unCx(Label t, Label f) {
+	public Stm unCx(Label t, Label f) {
 		// TODO Auto-generated method stub
 		// determine whether 0 or not
 		if (exp instanceof BINOP)

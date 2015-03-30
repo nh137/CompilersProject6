@@ -9,6 +9,7 @@ public class MethodDecl extends Absyn{
 	public java.util.LinkedList<VarDecl> locals ;
 	public java.util.LinkedList<Stmt> stmts;
 	public Expr returnVal;
+	public Translate.Types.FUNCTION checktype;
 	
 	public MethodDecl(Type returnType, boolean synced, 
 			java.lang.String name, java.util.LinkedList<Formal> params, java.util.LinkedList<VarDecl> locals, 
@@ -26,7 +27,7 @@ public class MethodDecl extends Absyn{
 	
 	public String toString()
 	  {   return "";   }
-	public Translate.Tree.Exp accept(Translate.Translate v) { return v.visit(this); }
-	public void accept(Semant.Visit.Visitor v)      {          v.visit(this);   }
-	public Semant.Types.Type accept(Semant.Visit.Visitor2 v) { return v.visit(this); }
+	public Translate.Translate.Exp accept(Translate.Translator.Translator  v) { return v.visit(this); }
+	public void accept(Translate.Visit.Visitor v)      {          v.visit(this);   }
+	//public Translate.Types.Type accept(Translate.Visit.Visitor2 v) { return v.visit(this); }
 }

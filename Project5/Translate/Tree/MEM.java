@@ -6,9 +6,9 @@ public class MEM extends Exp{
 		exp = e;
 	}
 	@Override
-	public void accept(IntVisitor v, int d) {
+	public void accept(IntVisitor v) {
 		// TODO Auto-generated method stub
-		v.visit(this, d);
+		v.visit(this);
 	}
 
 }

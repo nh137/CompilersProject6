@@ -1,20 +1,20 @@
-package Semant.Types;
+package Translate.Types;
 
-//import Semant.Visitor;
+//import Translate.Visitor;
 
 public class FIELD extends Type{
 	public int index;
-	public Semant.Symbol.Symbol name;
+	public Translate.Symbol.Symbol name;
 	public Type type;
 
-	public FIELD(Type t, int i, Semant.Symbol.Symbol n){
+	public FIELD(Type t, int i, Translate.Symbol.Symbol n){
 		this.index = i;
 		this.name = n;
 		this.type = t;
 	}
 
 	@Override
-	public void accept(Semant.Visit.Visitor v) {
+	public void accept(Translate.Visit.Visitor v) {
 		// TODO Auto-generated method stub
 		
 	}

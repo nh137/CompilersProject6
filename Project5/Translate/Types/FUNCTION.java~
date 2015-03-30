@@ -1,28 +1,28 @@
-package Semant.Types;
+package Translate.Types;
 
-//import Semant.Visitor;
+//import Translate.Visitor;
 
 public class FUNCTION extends Type{
 	
 	public RECORD formals;
-	public Semant.Symbol.Symbol name;
+	public Translate.Symbol.Symbol name;
 	public Type result;
 	public Type self;
 	
-	public FUNCTION(Semant.Symbol.Symbol n, Type s, RECORD f, Type r){
+	public FUNCTION(Translate.Symbol.Symbol n, Type s, RECORD f, Type r){
 		this.name = n;
 		this.formals = f;
 		this.result = r;
 		this.self = s;
 	}
 	
-	public FIELD addFormal(Type type, Semant.Symbol.Symbol n){
+	public FIELD addFormal(Type type, Translate.Symbol.Symbol n){
 		;
 		return null;
 	}
 
 	@Override
-	public void accept(Semant.Visit.Visitor v) {
+	public void accept(Translate.Visit.Visitor v) {
 		// TODO Auto-generated method stub
 		
 	}

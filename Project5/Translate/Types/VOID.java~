@@ -1,11 +1,11 @@
-package Semant.Types;
+package Translate.Types;
 
-//import Semant.Visitor;
+//import Translate.Visitor;
 
 public class VOID extends Type{
 
 	@Override
-	public void accept(Semant.Visit.Visitor v) {
+	public void accept(Translate.Visit.Visitor v) {
 		v.visit(this);
 	}
 

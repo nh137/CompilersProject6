@@ -1,24 +1,30 @@
 package Translate.Types;
 
-//import Semant.Visitor;
+//import Translate.Visitor;
 
 public class FIELD extends Type{
 	public int index;
-	public Semant.Symbol.Symbol name;
+	public String name;
 	public Type type;
 
-	public FIELD(Type t, int i, Semant.Symbol.Symbol n){
+	public FIELD(Type t, int i, String n){
+		this.index = i;
+		this.name = n;
+		this.type = t;
+	}
+	
+	public FIELD(Type t, String n, Integer i){
 		this.index = i;
 		this.name = n;
 		this.type = t;
 	}
 
 	@Override
-	public void accept(Semant.Visit.Visitor v) {
+	public void accept(Translate.Visit.Visitor v) {
 		v.visit(this);
 	}
 	
-	public Semant.Types.Type accept(Semant.Visit.Visitor2 v) { return v.visit(this); }
+	public Translate.Translate.Exp accept(Translate.Translator.Translator  v) { return v.visit(this); }
 
 	@Override
 	public

@@ -2,7 +2,7 @@ package Translate.Types;
 
 import java.util.Iterator;
 
-//import Semant.Visitor;
+//import Translate.Visitor;
 
 public class RECORD extends Type implements java.lang.Iterable<FIELD>{
 	
@@ -14,11 +14,11 @@ public class RECORD extends Type implements java.lang.Iterable<FIELD>{
 		counter = 0;
 	}
 	
-	public FIELD get(Semant.Symbol.Symbol name){
+	public FIELD get(String name){
 		for (int i = 0; i < fields.size(); i++)
 		{
 			FIELD f = fields.get(i);
-			if (f.name == name)
+			if (f.name.equals(name))
 				return f;
 		}
 		return null;
@@ -30,20 +30,20 @@ public class RECORD extends Type implements java.lang.Iterable<FIELD>{
 		
 	}
 	
-	public FIELD put(Type type, Semant.Symbol.Symbol name){
+	public FIELD put(Type type, String name){
 		//tb.put(name,type);
-		FIELD field = new FIELD(type,counter++,name);
+		FIELD field = new FIELD(type,name,counter++);
 		this.fields.add(field);
 		return field;
 	}
 
 	@Override
-	public void accept(Semant.Visit.Visitor v) {
+	public void accept(Translate.Visit.Visitor v) {
 		v.visit(this);
 		
 	}
 	
-	public Semant.Types.Type accept(Semant.Visit.Visitor2 v) { return v.visit(this); }
+	public Translate.Translate.Exp accept(Translate.Translator.Translator  v) { return v.visit(this); }
 
 	@Override
 	public boolean coerceTo(Type t) {

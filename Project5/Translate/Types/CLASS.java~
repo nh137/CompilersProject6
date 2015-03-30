@@ -1,22 +1,22 @@
-package Semant.Types;
+package Translate.Types;
 
-//import Semant.Visitor;
+//import Translate.Visitor;
 
 public class CLASS extends Type{
 	
 	public RECORD fields;
 	public OBJECT instance;
 	public RECORD methods;
-	public Semant.Symbol.Symbol name;
+	public Translate.Symbol.Symbol name;
 	public CLASS parent;
 	
-	public CLASS(Semant.Symbol.Symbol s){
+	public CLASS(Translate.Symbol.Symbol s){
 		this.name = s;
 		
 	}
 
 	@Override
-	public void accept(Semant.Visit.Visitor v) {
+	public void accept(Translate.Visit.Visitor v) {
 		// TODO Auto-generated method stub
 		
 	}

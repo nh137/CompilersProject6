@@ -1,15 +1,21 @@
 package Translate.Absyn;
 
-import java.util.AbstractList;
+import java.util.LinkedList;
 
 public class Program extends Absyn{
-	public AbstractList<ClassDecl> classes;
-	public java.util.LinkedList<Semant.Types.CLASS> ctl;
+	public LinkedList<ClassDecl> classes;
+	public java.util.LinkedList<Translate.Types.CLASS> ctl;
 	
-	public Program(AbstractList<ClassDecl> a2,java.util.LinkedList<Semant.Types.CLASS>classtypes){
+	public Program(LinkedList<ClassDecl> a2,java.util.LinkedList<Translate.Types.CLASS>classtypes){
 
 		classes = a2;
 		ctl = classtypes;
+	}
+	
+	public Program(LinkedList<ClassDecl> a2){
+
+		classes = a2;
+	
 	}
 	
 	public String toString(){
@@ -19,7 +25,7 @@ public class Program extends Absyn{
 			return null;
 		}
 	}
-	public Translate.Tree.Exp accept(Translate.Translate v) { return v.visit(this); }
-	public void accept(Semant.Visit.Visitor v){v.visit(this);}
-	public Semant.Types.Type accept(Semant.Visit.Visitor2 v) { return v.visit(this); }
+	public Translate.Translate.Exp accept(Translate.Translator.Translator  v) { return v.visit(this); }
+	public void accept(Translate.Visit.Visitor v){v.visit(this);}
+	//public Translate.Types.Type accept(Translate.Visit.Visitor2 v) { return v.visit(this); }
 }

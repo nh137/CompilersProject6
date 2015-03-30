@@ -2,16 +2,16 @@ package Translate.Tree;
 
 public class NAME extends Exp{
 
-	Translate.Temp.Label label;
+	public Translate.Temp.Label label;
 	
 	public NAME(Translate.Temp.Label l){
 		label = l;
 	}
 
 	@Override
-	public void accept(IntVisitor v, int d) {
+	public void accept(IntVisitor v) {
 		// TODO Auto-generated method stub
-		v.visit(this, d);
+		v.visit(this);
 	}
 	
 }

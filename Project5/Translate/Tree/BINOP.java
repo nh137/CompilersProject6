@@ -2,18 +2,18 @@ package Translate.Tree;
 
 public class BINOP extends Exp{
 
-	static int PLUS = 0;
-	static int MINUS = 1;
-	static int MUL = 2;
-	static int DIV = 3;
-	static int AND = 4;
-	static int OR = 5;
-	static int LSHIFT = 6;
-	static int RSHIFT = 7;
-	static int ARSHIFT = 8;
-	static int BITAND = 9;
-	static int BITOR = 10;
-	static int BITXOR = 11;
+	public static int PLUS = 0;
+	public static int MINUS = 1;
+	public static int MUL = 2;
+	public static int DIV = 3;
+	public static int AND = 4;
+	public static int OR = 5;
+	public static int LSHIFT = 6;
+	public static int RSHIFT = 7;
+	public static int ARSHIFT = 8;
+	public static int BITAND = 9;
+	public static int BITOR = 10;
+	public static int BITXOR = 11;
 	
 	public int binop;
 	public Exp left;
@@ -27,9 +27,9 @@ public class BINOP extends Exp{
 	}
 
 	@Override
-	public void accept(IntVisitor v, int d) {
+	public void accept(IntVisitor v) {
 		// TODO Auto-generated method stub
-		v.visit(this, d);
+		v.visit(this);
 		
 	}
 

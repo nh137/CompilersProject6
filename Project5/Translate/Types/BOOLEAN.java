@@ -1,6 +1,6 @@
 package Translate.Types;
 
-//import Semant.Types.Visitor;
+//import Translate.Types.Visitor;
 
 public class BOOLEAN extends Type {
 	public BOOLEAN(){
@@ -8,12 +8,12 @@ public class BOOLEAN extends Type {
 	}
 
 	@Override
-	public void accept(Semant.Visit.Visitor v) {
+	public void accept(Translate.Visit.Visitor v) {
 		v.visit(this);
 		
 	}
 	
-	public Semant.Types.Type accept(Semant.Visit.Visitor2 v) { return v.visit(this); }
+	public Translate.Translate.Exp accept(Translate.Translator.Translator  v) { return v.visit(this); }
 
 	@Override
 	public

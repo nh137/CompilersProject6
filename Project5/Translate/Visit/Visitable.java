@@ -1,4 +1,4 @@
-package Semant.Visit;
+package Translate.Visit;
 
 /**
  * Visitable.java
@@ -13,5 +13,5 @@ package Semant.Visit;
 public interface Visitable
 {
   public void accept(Visitor v);
-  public Semant.Types.Type accept(Visitor2 v);
+  //public Semant.Types.Type accept(Visitor2 v);
 }// Visitable

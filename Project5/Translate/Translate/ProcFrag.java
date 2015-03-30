@@ -2,8 +2,8 @@ package Translate.Translate;
 import Translate.Tree.*;
 import Translate.Frame.*;
 public class ProcFrag extends Frag{
-	Stm body;
-	Frame frame;
+	public Stm body;
+	public Frame frame;
 	
 	public ProcFrag(Stm s, Frame f){
 		body = s;

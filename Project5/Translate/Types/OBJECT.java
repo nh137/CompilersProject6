@@ -1,6 +1,6 @@
 package Translate.Types;
 
-//import Semant.Visitor;
+//import Translate.Visitor;
 
 public class OBJECT extends Type{
 	
@@ -21,11 +21,11 @@ public class OBJECT extends Type{
 	}
 
 	@Override
-	public void accept(Semant.Visit.Visitor v) {
+	public void accept(Translate.Visit.Visitor v) {
 		v.visit(this);
 		
 	}
-	public Semant.Types.Type accept(Semant.Visit.Visitor2 v) { return v.visit(this); }
+	public Translate.Translate.Exp accept(Translate.Translator.Translator  v) { return v.visit(this); }
 
 	@Override
 	public boolean coerceTo(Type t) {

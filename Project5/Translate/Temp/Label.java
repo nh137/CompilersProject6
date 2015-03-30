@@ -1,8 +1,8 @@
 package Translate.Temp;
 import Translate.Symbol.*;
 public class Label {
-	private static int count;
-	private String name;
+	public static int count;
+	public String name;
 	public Label(){
 		name = "L" + count++;
 	}

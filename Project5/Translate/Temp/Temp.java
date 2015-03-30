@@ -2,8 +2,8 @@ package Translate.Temp;
 
 public class Temp {
 
-	private static int count;
-	private int num;
+	public static int count;
+	public int num;
 	public Temp(){
 		num = count+1;
 		count++;
