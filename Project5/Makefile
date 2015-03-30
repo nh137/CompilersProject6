@@ -79,13 +79,13 @@ all:  $(SRCS:.java=.class)
 
 
 
-$(PARSER).java: Translate/$(PARSER).jj
+Translate/$(PARSER).java: Translate/$(PARSER).jj
 	$(JAVACC) $(JAVACC_FLAGS) $<
 
 parser: Translate/$(PARSER).class Translate/$(PARSER)Constants.class \
 	Translate/$(PARSER)TokenManager.class Translate/ParseException.class
 
-main: $(PARSER).class Main.class
+main: Translate/$(PARSER).class Main.class
 
 clean:
 	rm -f $(SRCS:.java=.class) ${JAVACCGEN} $(JAVACCGEN:.java=.class)

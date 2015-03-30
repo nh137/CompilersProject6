@@ -1,5 +1,6 @@
 /* Copyright (C) 2007-2013, Marquette University.  All rights reserved. */
 //options { DEBUG_PARSER=true; DEBUG_LOOKAHEAD=true; 
+options { OUTPUT_DIRECTORY = "Translate"; } 
 PARSER_BEGIN(ReadTypes)
 package Translate;
 import java.util.LinkedList;

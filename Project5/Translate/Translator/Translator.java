@@ -127,10 +127,11 @@ public class Translator
  return null; 
   }
   public Translate.Translate.Exp visit(IntegerLiteral e){
- return null; 
+	  return new Ex(new CONST(e.value));
+ 
   }
   public Translate.Translate.Exp visit(IntegerType e){
-  	return new Ex(new CONST(e.value));
+	  return null;
   }
   public Translate.Translate.Exp visit(LesserExpr e){
  return null; 
@@ -258,12 +259,14 @@ public class Translator
   }
 
 	public Translate.Translate.Exp visit(CLASS a){
-		Label cname = new Label(a.name);
-		String s = a.name + "_vtable:";
+		//Label cname = new Label(a.name);
+		String s = a.name;
+		Translate.Translate.DataFrag dfrag = new Translate.Translate.DataFrag(s);
 		for(FIELD f: a.methods.fields){
-			s+= "\n\t.word "+a.name+"."+f.name;
+			dfrag.flist.add(((FUNCTION)f.type));
 		}
-		Translate.Translate.DataFrag dfrag = new Translate.Translate.DataFrag(s ,cname);
+		frags.add(dfrag);
+		return null;
   }
 
 	public Translate.Translate.Exp visit(FIELD a){

@@ -2,12 +2,16 @@ package Translate.Translate;
 import Translate.Temp.Label;
 import Translate.Tree.*;
 import Translate.Frame.*;
+import java.util.ArrayList;
 public class DataFrag extends Frag{
 	public String data;
 	public Label label;
+	public ArrayList<Translate.Types.FUNCTION> flist;
 	
 	public DataFrag(String s){
 		data = s;
+		flist = new ArrayList<Translate.Types.FUNCTION>();
+		label = null;
 	}
 	
 	public DataFrag(String s, Label l){
@@ -15,13 +19,26 @@ public class DataFrag extends Frag{
 		label = l;
 	}
 	
-	public DataFrag(String s, Frame f, Frag n){
-		data = s;
-		///...
-	}
+	
 	
 	public String getData(){
 		return data;
+	}
+	
+	public String toString(){
+		String s;
+		s = "/t.data";
+		if(label == null){
+			s+="\n";
+			s+=data+"_vtable:\n";
+			for(Translate.Types.FUNCTION f : flist){
+				s+=".word "+data+"."+f.name;
+				s+="\n";
+			}
+		}else{
+			//String case
+		}
+		return s;
 	}
 	
 
