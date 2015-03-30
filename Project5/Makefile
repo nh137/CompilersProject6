@@ -5,7 +5,7 @@ JAVA     = java
 JAVACC   = javacc
 JJDOC    = jjdoc
 
-JAVACC_FLAGS = -NOSTATIC
+
 JAVAC_FLAGS = -Xdepend
 
 JAVACCGEN = Translate/SimpleCharStream.java Translate/ParseException.java \
@@ -70,7 +70,7 @@ TREE	=	Translate/Tree/BINOP.java Translate/Tree/CALL.java \
 
 SYMBOL	= Translate/Symbol/Symbol.java Translate/Symbol/Table.java
 
-SRCS     =  $(ABSYN) $(SYMBOL)  $(TYPES) $(VISIT) $(PARSER).java Translate/Main.java Translate/Translator/Translator.java Translate/Util/BoolList.java
+SRCS     =  $(ABSYN) $(SYMBOL)  $(TYPES) $(VISIT) Translate/$(PARSER).java Translate/Main.java Translate/Translator/Translator.java Translate/Util/BoolList.java
 
 all:  $(SRCS:.java=.class)
 
@@ -80,12 +80,12 @@ all:  $(SRCS:.java=.class)
 
 
 Translate/$(PARSER).java: Translate/$(PARSER).jj
-	$(JAVACC) $(JAVACC_FLAGS) $<
+	$(JAVACC)  $<
 
 parser: Translate/$(PARSER).class Translate/$(PARSER)Constants.class \
 	Translate/$(PARSER)TokenManager.class Translate/ParseException.class
 
-main: Translate/$(PARSER).class Main.class
+main: $(PARSER).class Main.class
 
 clean:
 	rm -f $(SRCS:.java=.class) ${JAVACCGEN} $(JAVACCGEN:.java=.class)

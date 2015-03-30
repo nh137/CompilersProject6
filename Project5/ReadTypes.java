@@ -1363,16 +1363,6 @@ public class ReadTypes implements ReadTypesConstants {
     finally { jj_save(3, xla); }
   }
 
-  private boolean jj_3R_25() {
-    if (jj_3R_20()) return true;
-    return false;
-  }
-
-  private boolean jj_3R_18() {
-    if (jj_scan_token(17)) return true;
-    return false;
-  }
-
   private boolean jj_3R_24() {
     if (jj_3R_19()) return true;
     return false;
@@ -1442,6 +1432,16 @@ public class ReadTypes implements ReadTypesConstants {
 
   private boolean jj_3_1() {
     if (jj_3R_17()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_25() {
+    if (jj_3R_20()) return true;
+    return false;
+  }
+
+  private boolean jj_3R_18() {
+    if (jj_scan_token(17)) return true;
     return false;
   }
 
