@@ -258,7 +258,12 @@ public class Translator
   }
 
 	public Translate.Translate.Exp visit(CLASS a){
- return null; 
+		Label cname = new Label(a.name);
+		String s = a.name + "_vtable:";
+		for(FIELD f: a.methods.fields){
+			s+= "\n\t.word "+a.name+"."+f.name;
+		}
+		Translate.Translate.DataFrag dfrag = new Translate.Translate.DataFrag(s ,cname);
   }
 
 	public Translate.Translate.Exp visit(FIELD a){

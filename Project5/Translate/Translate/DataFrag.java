@@ -3,11 +3,16 @@ import Translate.Temp.Label;
 import Translate.Tree.*;
 import Translate.Frame.*;
 public class DataFrag extends Frag{
-	String data;
-	Label lab;
+	public String data;
+	public Label label;
 	
 	public DataFrag(String s){
 		data = s;
+	}
+	
+	public DataFrag(String s, Label l){
+		data = s;
+		label = l;
 	}
 	
 	public DataFrag(String s, Frame f, Frag n){
