@@ -20,13 +20,15 @@ public class Ex extends Exp{
 	public Stm unCx(Label t, Label f) {
 		// TODO Auto-generated method stub
 		// determine whether 0 or not
-		if (exp instanceof BINOP)
-		{
-		//TODO evaluate the binop here?
-		//	if ((exp.binop == 4 && (exp.left && exp.right)|| (exp.binop == 5)
-			return new JUMP(t);
-		}else
-			return new JUMP(f);
+//		if (exp instanceof BINOP)
+//		{
+//		//TODO evaluate the binop here?
+//		//	if ((exp.binop == 4 && (exp.left && exp.right)|| (exp.binop == 5)
+//			return new JUMP(t);
+//		}else
+//			return new JUMP(f);
+		
+		return new CJUMP(1,exp, new CONST(0), t,f);
 	}
 	
 }

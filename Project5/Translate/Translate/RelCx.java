@@ -11,11 +11,11 @@ import Translate.Tree.Stm;
 import Translate.Tree.TEMP;
 
 public class RelCx extends Cx{
-	public  Exp le;
+	public  Translate.Tree.Exp le;
 	public  int operator;
-	public  Exp re;
+	public  Translate.Tree.Exp re;
 	
-	public RelCx(int op, Exp l, Exp r){
+	public RelCx(int op, Translate.Tree.Exp l, Translate.Tree.Exp r){
 		operator = op;
 		le = l;
 		re = r;
@@ -23,15 +23,9 @@ public class RelCx extends Cx{
 	@Override
 	public Stm unCx(Label t, Label f) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Translate.Tree.Exp unEx() {
-		return null;
+		return new CJUMP(operator, le , re, t, f);
 	}
 	
-	public Translate.Tree.Stm unNx(){
-		return null;
-	}
+	
 
 }
