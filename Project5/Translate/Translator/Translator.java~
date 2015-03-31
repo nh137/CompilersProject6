@@ -12,14 +12,14 @@ import Translate.*;
 import java.util.*;
 public class Translator
 {
-	Frame type;
+	MipsFrame type;
 	MipsFrame currFrame;
 	ArrayList<Frag> frags;
 	ClassDecl currClass;
 	MethodDecl currMeth;
 	Table tb;
 	
-	public Translator(Frame f){
+	public Translator(MipsFrame f){
 		type = f;
 	}
 	
@@ -128,11 +128,15 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
 	, new ESEQ(new LABEL(ok), new MEM(new BINOP(0,new TEMP(result), new CONST(index*currFrame.wordsize()))))));
   }
   public Translate.Translate.Exp visit(Formal e){
+//TODO
  return null; 
   }
   public Translate.Translate.Exp visit(GreaterExpr e){
- return null; 
+	Translate.Tree.Exp left = e.e1.accept(this).unEx();
+	Translate.Tree.Exp right = e.e2.accept(this).unEx();
+	return new Ex(new CJUMP(CJUMP.GT, left, right, new Label(), new Label()));
   }
+ 
   public Translate.Translate.Exp visit(IdentifierExpr e){
 		Access a = (Access)tb.get(e.id);
 		if(a instanceof InReg){
@@ -146,7 +150,13 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
   	return new Ex(new CONST(0));
   }
   public Translate.Translate.Exp visit(IfStmt e){
- return null; 
+	Label tr = new Label();
+	Label fl = new Label();
+	Label join = new Label();
+	
+	return new Nx(new SEQ(new CJUMP(CJUMP.EQ,e.test1.accept(this),new CONST(1),tr,fl), 
+				new SEQ(new LABEL(f), new SEQ())
+				)); 
   }
   public Translate.Translate.Exp visit(IntegerLiteral e){
 	  return new Ex(new CONST(e.value));
@@ -163,7 +173,7 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
 	Translate.Tree.Stm varStms = null;
 	Translate.Tree.Stm bodyStms = null;
 	if(e.name.equals("main")){
-		currFrame = new MipsFrame(new Label(e.name), e.params.size());
+		currFrame = type.newFrame(new Label(e.name), e.params.size());
 	}else{
 		currFrame = new MipsFrame(new Label(currClass.name + "." + e.name), e.params.size());
 	}

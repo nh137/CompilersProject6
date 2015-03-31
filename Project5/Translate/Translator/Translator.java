@@ -155,7 +155,7 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
 	Label join = new Label();
 	
 	return new Nx(new SEQ(new CJUMP(CJUMP.EQ,e.test1.accept(this),new CONST(1),tr,fl), 
-				new SEQ(new LABEL(f), new SEQ())
+				new SEQ(new LABEL(fl), new SEQ(e.elseStmt.accept(this).unNx(), new SEQ(new JUMP(new NAME(join))))
 				)); 
   }
   public Translate.Translate.Exp visit(IntegerLiteral e){
