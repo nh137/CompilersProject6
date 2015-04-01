@@ -9,6 +9,7 @@ public class Print implements IntVisitor{
     public Print(java.io.PrintWriter out, Stm s){
 	this.out = out;
 	this.s = s;
+	s.accept(this);
     }
 
     private void printIndent(){
@@ -22,10 +23,10 @@ public void visit(BINOP n) {
     out.println("BINOP("+n.binop);
     indent +=2; printIndent();
     n.left.accept(this);
-    out.println();
+    out.println();printIndent();
     n.right.accept(this);
     indent -= 2;
-    out.println(")");
+    out.print(")");
 }
 @Override
 public void visit(CALL n) {
@@ -33,13 +34,14 @@ public void visit(CALL n) {
     out.println("CALL(");
     indent += 2; printIndent();
     n.func.accept(this);
-    out.println();
+  
     for(int i=0; i<n.args.size(); i++){
+    	  out.println();printIndent();
 	n.args.get(i).accept(this);
 	out.println();
     }
     indent -= 2;
-    out.println(")");
+    out.print(")");
 }
 @Override
 public void visit(CJUMP n) {
@@ -54,7 +56,7 @@ public void visit(CJUMP n) {
     out.println();
     n.iffalse.toString();
     indent =-2;
-    out.println(")");
+    out.print(")");
 }
 @Override
 public void visit(CONST n) {
@@ -67,10 +69,10 @@ public void visit(ESEQ n) {
     out.println("ESEQ(");
     indent += 2; printIndent();
     n.stm.accept(this);
-    out.println();
+    out.println();out.println(")");
     n.exp.accept(this);
     indent -= 2;
-    out.println(")");
+    out.print(")");
 }
 @Override
 public void visit(EXP n) {
@@ -79,7 +81,7 @@ public void visit(EXP n) {
     indent += 2; printIndent();
     n.exp.accept(this);
     indent -= 2;
-    out.println(")");
+    out.print(")");
 }
 @Override
 public void visit(JUMP n) {
@@ -89,11 +91,12 @@ public void visit(JUMP n) {
     n.exp.accept(this);
     out.println();
     for(int i=0; i<n.targets.size(); i++){
+    	out.println(")");
 	n.targets.get(i).toString();
 	out.println();
     }
     indent -= 2;
-    out.println(")");
+    out.print(")");
 }
 @Override
 public void visit(LABEL n) {
@@ -107,7 +110,7 @@ public void visit(MEM n) {
     indent += 2; printIndent();
     n.exp.accept(this);
     indent -= 2;
-    out.println(")");
+    out.print(")");
 }
 @Override
 public void visit(MOVE n) {
@@ -115,10 +118,10 @@ public void visit(MOVE n) {
  out.println("MOVE(");
     indent += 2; printIndent();
     n.dst.accept(this);
-    out.println();
+    out.println();printIndent();
     n.src.accept(this);
     indent -= 2;
-    out.println(")");
+    out.print(")");
 }
 @Override
 public void visit(NAME n) {
@@ -131,14 +134,14 @@ public void visit(SEQ n) {
     out.println("SEQ(");
     indent += 2; printIndent();
     n.left.accept(this);
-    out.println();
+    out.println();printIndent();
     n.right.accept(this);
     indent -= 2;
-    out.println(")");
+    out.print(")");
 }
 @Override
 public void visit(TEMP n) {
 // TODO Auto-generated method stub
- out.print("TEMP("+n.temp.num+")");
+ out.print("TEMP("+n.temp+")");
 }
 }

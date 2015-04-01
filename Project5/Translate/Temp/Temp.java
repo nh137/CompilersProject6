@@ -5,7 +5,7 @@ public class Temp {
 	public static int count;
 	public int num;
 	public Temp(){
-		num = count+1;
+		num = count;
 		count++;
 	}
 	

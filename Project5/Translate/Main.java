@@ -73,8 +73,8 @@ public class Main
 			System.exit(-1);
 	    }
 		
-		System.out.println(parse.classes.get(0).methods.get(0).locals.get(1).name);
-		/*
+		//System.out.println(parse.classes.get(0).methods.get(0).locals.get(1).name);
+		
 		
 		Translator translate = new Translator(new Translate.Mips.MipsFrame());
 		parse.accept(translate);
@@ -103,13 +103,15 @@ public class Main
 				{
 					new Translate.Tree.Print(writer, p.body);
 					writer.println();
+				}else{
+					writer.println("BODY IS NULL");
 				}
 				writer.println(")");
 			}
 		}  
 		writer.flush();
 		
-		*/
+		
 	}
 }	
 
