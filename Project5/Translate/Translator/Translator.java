@@ -68,7 +68,6 @@ public class Translator
 	public Translate.Translate.Exp visit(AssignStmt e){
 		Translate.Tree.Exp left = e.lhs.accept(this).unEx();
 		Translate.Tree.Exp right = e.rhs.accept(this).unEx();
-		//Symbol table lookup? TODO
 		return new Nx(new MOVE(left,right)); 
 	}
 	public Translate.Translate.Exp visit(BinOpExpr e){
@@ -221,6 +220,8 @@ public class Translator
 		//	new SEQ(new LABEL(fl), new SEQ(e.elseStmt.accept(this).unNx(), new SEQ(new JUMP(join)))
 		//		))); 
 		//return new IfThenElse();
+		//unCx the newly created ifthenelse TODO
+		//return new Nx();
 		return null;
 	}
 	public Translate.Translate.Exp visit(IntegerLiteral e){
@@ -231,7 +232,9 @@ public class Translator
 		return null;
 	}
 	public Translate.Translate.Exp visit(LesserExpr e){
-		return null; 
+		Translate.Tree.Exp left = e.e1.accept(this).unEx();
+		Translate.Tree.Exp right = e.e2.accept(this).unEx();
+		return new Nx(new CJUMP(CJUMP.LT, left, right, new Label(), new Label()));
 	}
 	public Translate.Translate.Exp visit(MethodDecl e){
 		currMeth = e;
