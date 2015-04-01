@@ -258,6 +258,7 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
 	Label l = new Label();
 	String s = e.value;
 	Translate.Translate.DataFrag dfrag = new Translate.Translate.DataFrag(s,l);
+	frags.add(dfrag);
  	return new LABEL(l); 
   }
   public Translate.Translate.Exp visit(SubExpr e){
@@ -283,7 +284,9 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
  return null; 
   }
   public Translate.Translate.Exp visit(WhileStmt e){
- return null; 
+	Translate.Tree.Exp tstStm = e.test.accept(this);
+	Translate.Tree.Exp bodyStm = e.body.accept(this);
+ 	return new Nx(); 
   }
   public Translate.Translate.Exp visit(XinuCallStmt e){
  return null; 

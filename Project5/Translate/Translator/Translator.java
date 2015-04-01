@@ -132,6 +132,7 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
   }
   public Translate.Translate.Exp visit(Formal e){
 //TODO
+	currFrame.formals = new ArrayList<Access>();
  return null; 
   }
   public Translate.Translate.Exp visit(GreaterExpr e){
@@ -258,6 +259,7 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
 	Label l = new Label();
 	String s = e.value;
 	Translate.Translate.DataFrag dfrag = new Translate.Translate.DataFrag(s,l);
+	frags.add(dfrag);
  	return new LABEL(l); 
   }
   public Translate.Translate.Exp visit(SubExpr e){
