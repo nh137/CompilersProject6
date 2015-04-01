@@ -27,12 +27,12 @@ public class DataFrag extends Frag{
 	
 	public String toString(){
 		String s;
-		s = "/t.data";
+		s = "\t.data";
 		if(label == null){
 			s+="\n";
 			s+=data+"_vtable:\n";
 			for(Translate.Types.FUNCTION f : flist){
-				s+=".word "+data+"."+f.name;
+				s+="\t.word "+data+"."+f.name;
 				s+="\n";
 			}
 		}else{

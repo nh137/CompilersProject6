@@ -12,6 +12,7 @@ public class MipsFrame extends Frame{
 	public Label badSub;
 	public Label name;
 	public ArrayList<Access> formals;
+	public ArrayList<InReg> regs;
 	
 	//public MipsFrame(Label n, int numOfBools){
 	//	this.name = n;
@@ -19,8 +20,9 @@ public class MipsFrame extends Frame{
 	
 	public MipsFrame(){
 		//this.name = n;
+		regs = new ArrayList<InReg>();
 		for(int i = 0; i < 32; i++){
-			Temp temp = new Temp();
+			regs.add(new InReg(new Temp()));
 		}
 		badPtr = new Label("BADPTR");
 		badSub = new Label("BADSUB");
@@ -54,10 +56,12 @@ public class MipsFrame extends Frame{
 	}
 
 	@Override
-	public Access alloclLocal(boolean escape) {
+	public Access allocLocal(boolean escape) {
 		// TODO Auto-generated method stub
 		Temp t = new Temp();
-		return new InReg(t);
+		InReg r = new InReg(t);
+		
+		return r;
 	}
 	
 	public Access allocFormal(boolean escape) {
@@ -65,17 +69,29 @@ public class MipsFrame extends Frame{
 		Temp t = new Temp();
 		InReg r = new InReg(t);
 		formals.add(r);
-		return null;
+		return r;
 	}
 	
 	public void printFrame(java.io.PrintWriter writer){
 		writer.print("MipsFrame(\n");
 		writer.print(name+"\n");
-		writer.print("Formals(" + "InReg()"+FP+")\n");
+		writer.print("Formals(" + "InReg("+FP+")\n");
 		int i = 4;
 		for(Access a : formals){
-			writer.print("\tInReg(t"+((InReg)a).temp+")\n");
-			writer.print("\tInReg(t"+i+")\n");
+			writer.print("\tInReg("+((InReg)a).temp+")\n");
+			
+		}
+		writer.print("\t)\n");
+		writer.print("Actuals(" + "InReg(t"+i+")\n");
+		i++;
+		for(Access a : formals){
+			if(i < 8){
+				writer.print("\tInReg(t"+i+")\n");
+			}
+				
+			else{
+				writer.print("\tInFrame("+(i-4)+")\n");
+			}
 			i++;
 			
 		}
