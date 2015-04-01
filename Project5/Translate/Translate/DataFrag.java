@@ -7,6 +7,7 @@ public class DataFrag extends Frag{
 	public String data;
 	public Label label;
 	public ArrayList<Translate.Types.FUNCTION> flist;
+	public Translate.Types.CLASS c;
 	
 	public DataFrag(String s){
 		data = s;

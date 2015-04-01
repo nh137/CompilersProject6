@@ -316,6 +316,7 @@ public class Translator
 		//Label cname = new Label(a.name);
 		String s = a.name;
 		Translate.Translate.DataFrag dfrag = new Translate.Translate.DataFrag(s);
+		dfrag.c = a;
 		for(FIELD f: a.methods.fields){
 			dfrag.flist.add(((FUNCTION)f.type));
 		}
