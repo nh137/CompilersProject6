@@ -31,16 +31,23 @@ Program(
         0) 
        INT)
       VarDecl(IntegerType a
-       FieldExpr(
-        IdentifierExpr(y)
-        t
-        1) 
+       AddExpr(
+        FieldExpr(
+         IdentifierExpr(y)
+         t
+         1)
+        IdentifierExpr(h)) 
        INT)
       VarDecl(IntegerType b
-       FieldExpr(
-        IdentifierExpr(y)
-        p
-        2) 
+       AddExpr(
+        FieldExpr(
+         IdentifierExpr(y)
+         p
+         2)
+        FieldExpr(
+         IdentifierExpr(y)
+         t
+         1)) 
        INT))
      AbstractList()
      IntegerLiteral(0)
@@ -88,9 +95,11 @@ Program(
      AbstractList()
      AbstractList(
       AssignStmt(
-       IdentifierExpr(q)
+       IdentifierExpr(t)
        IntegerLiteral(2)))
-     IntegerLiteral(6)
+     AddExpr(
+      IntegerLiteral(6)
+      IntegerLiteral(1))
      FUNCTION(one
       OBJECT(yellow)
       RECORD()
