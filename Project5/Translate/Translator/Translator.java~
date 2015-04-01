@@ -28,7 +28,6 @@ public class Translator
 	public ArrayList<Frag> results(){
 		return frags;
 	}
-<<<<<<< HEAD
  
   
   
@@ -62,7 +61,7 @@ public class Translator
   }
   public Translate.Translate.Exp visit(AssignStmt e){
 	Translate.Tree.Exp left = e.lhs.accept(this).unEx();
-	Translate.Tree.Exp right = e.lhs.accept(this).unEx();
+	Translate.Tree.Exp right = e.rhs.accept(this).unEx();
 	//Symbol table lookup? TODO
  	return new Nx(new MOVE(left,right)); 
   }
@@ -70,30 +69,30 @@ public class Translator
  return null; 
   }
   public Translate.Translate.Exp visit(BlockStmt e){
-	if (e.stmts.size() > 1)
-		return new Nx(new SEQ(e.stmts.get(0).accept(this).unEx(),sequenceSubTree(e.stmts,1))); 
-	else if (e.stmts.size() == 0)
+		//if (e.stmts.size() > 1)
+		//return new Nx(new SEQ(e.stmts.get(0).accept(this).unEx(),sequenceSubTree(e.stmts,1))); 
+		//else if (e.stmts.size() == 0)
 		return null;
-  }  
-public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int index)
-{
-	if (index < list.size()-1)
-		return new SEQ(e.stmts.get(index).accept(this).unEx(),sequenceSubTree(list,index++));
-	else
-		return e.stmts.get(index).accept(this).unEx();
-}
+	}  
+//public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int index)
+	//{
+	//	if (index < list.size()-1)
+	//		return new SEQ(e.stmts.get(index).accept(this).unEx(),sequenceSubTree(list,index++));
+	//	else
+	//		return e.stmts.get(index).accept(this).unEx();
+	//}
   public Translate.Translate.Exp visit(BooleanType e){
   	return new Ex(new CONST(0));
   }
 
 
-  public Translate.Translate.Exp visit(CallExpr e){
-	Translate.Tree.Exp func = e.target.accept(this);
-	java.util.ArrayList<Translate.Translate.Exp> argsList = new java.util.ArrayList<Translate.Translate.Exp>();
-	for (int i=0;i<e.args.size();i++)
-	{ argsList.add(e.args.get(i).accept(this)); }
- 	return new CALL(func,argsList); 
-  }
+public Translate.Translate.Exp visit(CallExpr e){
+		Translate.Tree.Exp func = e.target.accept(this).unEx();
+		java.util.ArrayList<Translate.Tree.Exp> argsList = new java.util.ArrayList<Translate.Tree.Exp>();
+		for (int i=0;i<e.args.size();i++)
+		{ argsList.add(e.args.get(i).accept(this).unEx()); }
+		return new Ex(new CALL(func,argsList)); 
+	}
 
   public Translate.Translate.Exp visit(ClassDecl e){
 	//checktype, should make datafrag from instance
@@ -145,120 +144,6 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
   }
  
   public Translate.Translate.Exp visit(IdentifierExpr e){
-=======
-
-
-
-	public Translate.Translate.Exp visit(Absyn a){
-		return null; 
-	}
-	public Translate.Translate.Exp visit(AddExpr e){
-		Translate.Tree.Exp left = e.e1.accept(this).unEx();
-		Translate.Tree.Exp right = e.e2.accept(this).unEx();
-		return new Ex(new BINOP(BINOP.PLUS, left, right));
-
-	}
-	public Translate.Translate.Exp visit(AndExpr e){
-		//if else stuff
-		return null;
-	}
-	public Translate.Translate.Exp visit(ArrayExpr e){
-		Translate.Tree.Exp left = e.target.accept(this).unEx();
-		Translate.Tree.Exp right = e.index.accept(this).unEx();
-		return new Ex(new BINOP(BINOP.PLUS, left, right));
-
-	}
-	public Translate.Translate.Exp  visit(ArrayType e){
-		return new Ex(new CONST(0));
-	}
-	public Translate.Translate.Exp visit(AssignableExpr e){
-		return null; 
-	}
-	public Translate.Translate.Exp visit(AssignStmt e){
-		Translate.Tree.Exp left = e.lhs.accept(this).unEx();
-		Translate.Tree.Exp right = e.rhs.accept(this).unEx();
-		//Symbol table lookup? TODO
-		return new Nx(new MOVE(left,right)); 
-	}
-	public Translate.Translate.Exp visit(BinOpExpr e){
-		return null; 
-	}
-	public Translate.Translate.Exp visit(BlockStmt e){
-		//if (e.stmts.size() > 1)
-		//return new Nx(new SEQ(e.stmts.get(0).accept(this).unEx(),sequenceSubTree(e.stmts,1))); 
-		//else if (e.stmts.size() == 0)
-		return null;
-	}  
-	//public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int index)
-	//{
-	//	if (index < list.size()-1)
-	//		return new SEQ(e.stmts.get(index).accept(this).unEx(),sequenceSubTree(list,index++));
-	//	else
-	//		return e.stmts.get(index).accept(this).unEx();
-	//}
-	public Translate.Translate.Exp visit(BooleanType e){
-		return new Ex(new CONST(0));
-	}
-
-
-	public Translate.Translate.Exp visit(CallExpr e){
-		Translate.Tree.Exp func = e.target.accept(this).unEx();
-		java.util.ArrayList<Translate.Tree.Exp> argsList = new java.util.ArrayList<Translate.Tree.Exp>();
-		for (int i=0;i<e.args.size();i++)
-		{ argsList.add(e.args.get(i).accept(this).unEx()); }
-		return new Ex(new CALL(func,argsList)); 
-	}
-
-	public Translate.Translate.Exp visit(ClassDecl e){
-		//checktype, should make datafrag from instance
-		currClass = e;
-		e.checktype.accept(this);
-
-		for(MethodDecl m : e.methods){
-			m.accept(this);
-		}
-		return null;
-
-	}
-	public Translate.Translate.Exp visit(DivExpr e){
-		Translate.Tree.Exp left = e.e1.accept(this).unEx();
-		Translate.Tree.Exp right = e.e2.accept(this).unEx();
-		return new Ex(new BINOP(BINOP.DIV, left, right));
-
-	}
-	public Translate.Translate.Exp visit(EqualExpr e){
-		Translate.Tree.Exp left = e.e1.accept(this).unEx();
-		Translate.Tree.Exp right = e.e2.accept(this).unEx();
-		return new Ex(new BINOP(BINOP.AND, left, right)); 
-	}
-	public Translate.Translate.Exp visit(Expr e){
-		return null; 
-	}
-	public Translate.Translate.Exp visit(FalseExpr e){
-		return new Ex(new CONST(0)); 
-	}
-	public Translate.Translate.Exp visit(FieldExpr e){
-		int index = e.typeIndex;
-		Translate.Tree.Exp exp = e.target.accept(this).unEx();
-		Label bad = currFrame.badPtr();
-		Label ok = new Label();
-		Temp result = new Temp();
-		return new Ex(new ESEQ(new SEQ( new MOVE(new TEMP(result), exp), new CJUMP(0, new TEMP(result), new CONST(0),
-				bad, ok))
-		, new ESEQ(new LABEL(ok), new MEM(new BINOP(0,new TEMP(result), new CONST(index*currFrame.wordsize()))))));
-	}
-	public Translate.Translate.Exp visit(Formal e){
-		//TODO
-		return null; 
-	}
-	public Translate.Translate.Exp visit(GreaterExpr e){
-		Translate.Tree.Exp left = e.e1.accept(this).unEx();
-		Translate.Tree.Exp right = e.e2.accept(this).unEx();
-		return new Nx(new CJUMP(CJUMP.GT, left, right, new Label(), new Label()));
-	}
-
-	public Translate.Translate.Exp visit(IdentifierExpr e){
->>>>>>> 66fdd84827ccc30b2e88bb41bdb6d05c27da081b
 		Access a = (Access)tb.get(e.id);
 		if(a instanceof InReg){
 			return new Ex( new TEMP(((InReg)a).temp));
@@ -351,8 +236,8 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
 
 	}
 	public Translate.Translate.Exp visit(NegExpr e){
-		return null; 
-	}
+ 		return new Ex(e.e1.accept(this)); 
+  	}
 	public Translate.Translate.Exp visit(NewArrayExpr e){
 		return null; 
 	}
@@ -360,68 +245,28 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
 		return null; 
 	}
 	public Translate.Translate.Exp visit(NotEqExpr e){
-		return null; 
-	}
+  	Translate.Tree.Exp left = e.e1.accept(this).unEx();
+	Translate.Tree.Exp right = e.e2.accept(this).unEx();
+	return new Ex( new CJUMP(CJUMP.NE, left, right));
+  }
 
 	public Translate.Translate.Exp visit(NullExpr e){
 		return null; 
 	}
 	public Translate.Translate.Exp visit(OrExpr e){
-		return null; 
-	}
-
-<<<<<<< HEAD
-	if(varStms == null && bodyStms == null){
-		//dont know what to do here
-	}
-
-	frags.add(new ProcFrag(varStms, currFrame));
-
-	return null;
-	
-	
-  }
-  public Translate.Translate.Exp visit(MulExpr e){
-  	Translate.Tree.Exp left = e.e1.accept(this).unEx();
-	Translate.Tree.Exp right = e.e2.accept(this).unEx();
-	return new Ex( new BINOP(BINOP.MUL, left, right));
-
-  }
-  public Translate.Translate.Exp visit(NegExpr e){
- 	return new Ex(e.e1.accept(this)); 
-  }
-  public Translate.Translate.Exp visit(NewArrayExpr e){
- return null; 
-  }
-  public Translate.Translate.Exp visit(NewObjectExpr e){
- return null; 
-  }
-  public Translate.Translate.Exp visit(NotEqExpr e){
-  	Translate.Tree.Exp left = e.e1.accept(this).unEx();
-	Translate.Tree.Exp right = e.e2.accept(this).unEx();
-	return new Ex( new CJUMP(CJUMP.NE, left, right));
-  }
-  
-  public Translate.Translate.Exp visit(NullExpr e){
- return null; 
-  }
-  public Translate.Translate.Exp visit(OrExpr e){
   	Translate.Tree.Exp left = e.e1.accept(this).unEx();
 	Translate.Tree.Exp right = e.e2.accept(this).unEx();
 	return new Ex( new BINOP(BINOP.OR, left, right)); 
   }
   
-  
-  public Translate.Translate.Exp visit(Program e){
-=======
 
-	public Translate.Translate.Exp visit(Program e){
->>>>>>> 66fdd84827ccc30b2e88bb41bdb6d05c27da081b
+<<<<<<< HEAD
+ 
+  public Translate.Translate.Exp visit(Program e){
 		for(ClassDecl c : e.classes){
 			c.accept(this);
 		}
 		return null;
-<<<<<<< HEAD
 	
   }
   public Translate.Translate.Exp visit(Stmt e){
@@ -450,16 +295,24 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
  return new CONST(1); 
   }
  
-  public Translate.Translate.Exp visit(VarDecl e){
- return null; 
-  }
+ public Translate.Translate.Exp visit(VarDecl e){
+		InReg r = (InReg)currFrame.allocLocal(false);
+		tb.put(e.name, r);
+		if(e.init == null){
+			return new Nx(new MOVE(new TEMP(r.temp), new CONST(0)));
+		}
+		
+		return new Nx(new MOVE(new TEMP(r.temp), e.init.accept(this).unEx()));
+		 
+	}
   public Translate.Translate.Exp visit(VoidDecl e){
  return null; 
   }
   public Translate.Translate.Exp visit(WhileStmt e){
 	Translate.Tree.Exp tstStm = e.test.accept(this);
 	Translate.Tree.Exp bodyStm = e.body.accept(this);
- 	return new Nx(); 
+ 	//return new Nx(); 
+	return null;
   }
   public Translate.Translate.Exp visit(XinuCallStmt e){
  return null; 
@@ -471,58 +324,6 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
   public Translate.Translate.Exp visit(ARRAY a){
  return null; 
   }
-=======
-
-	}
-	public Translate.Translate.Exp visit(Stmt e){
-		return null; 
-	}
-	public Translate.Translate.Exp visit(StringLiteral e){
-		return null; 
-	}
-	public Translate.Translate.Exp visit(SubExpr e){
-		Translate.Tree.Exp left = e.e1.accept(this).unEx();
-		Translate.Tree.Exp right = e.e2.accept(this).unEx();
-		return new Ex(new BINOP(BINOP.MINUS, left, right));
-
-	}
-	public Translate.Translate.Exp visit(ThisExpr e){
-		return null; 
-	}
-	public Translate.Translate.Exp visit(ThreadDecl e){
-		return null; 
-	}
-	public Translate.Translate.Exp visit(TrueExpr e){
-		return null; 
-	}
-
-	public Translate.Translate.Exp visit(VarDecl e){
-		InReg r = (InReg)currFrame.allocLocal(false);
-		tb.put(e.name, r);
-		if(e.init == null){
-			return new Nx(new MOVE(new TEMP(r.temp), new CONST(0)));
-		}
-		
-		return new Nx(new MOVE(new TEMP(r.temp), e.init.accept(this).unEx()));
-		 
-	}
-	public Translate.Translate.Exp visit(VoidDecl e){
-		return null; 
-	}
-	public Translate.Translate.Exp visit(WhileStmt e){
-		return null; 
-	}
-	public Translate.Translate.Exp visit(XinuCallStmt e){
-		return null; 
-	}
-	public Translate.Translate.Exp visit(XinuCallExpr e){
-		return null; 
-	}
-
-	public Translate.Translate.Exp visit(ARRAY a){
-		return null; 
-	}
->>>>>>> 66fdd84827ccc30b2e88bb41bdb6d05c27da081b
 
 	public Translate.Translate.Exp visit(BOOLEAN a){
 		return null; 
@@ -532,6 +333,7 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
 		//Label cname = new Label(a.name);
 		String s = a.name;
 		Translate.Translate.DataFrag dfrag = new Translate.Translate.DataFrag(s);
+		dfrag.c = a;
 		for(FIELD f: a.methods.fields){
 			dfrag.flist.add(((FUNCTION)f.type));
 		}

@@ -258,9 +258,6 @@ public Translate.Translate.Exp visit(CallExpr e){
 	Translate.Tree.Exp right = e.e2.accept(this).unEx();
 	return new Ex( new BINOP(BINOP.OR, left, right)); 
   }
-  
-
-<<<<<<< HEAD
  
   public Translate.Translate.Exp visit(Program e){
 		for(ClassDecl c : e.classes){
