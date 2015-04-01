@@ -283,9 +283,8 @@ public class Translator
 			bodyStms = new MOVE(new TEMP(regs.get(2).temp), e.returnVal.accept(this).unEx());
 			
 		}
-		if(e.name.equals("main")){
-			bodyStms = new SEQ(bodyStms, new MOVE(new TEMP(regs.get(2).temp), new CONST(0)));
-		}else if(!flag){
+		
+		if(!flag){
 			//uhhh
 			bodyStms = new SEQ(bodyStms, new MOVE(new TEMP(regs.get(2).temp), e.returnVal.accept(this).unEx()));
 		}
@@ -367,7 +366,13 @@ public class Translator
 		return null; 
 	}
 	public Translate.Translate.Exp visit(ThreadDecl e){
-		return null; 
+		currClass = e;
+		//..e.checktype.accept(this);
+
+		for(MethodDecl m : e.methods){
+			m.accept(this);
+		}
+		return null;
 	}
 	public Translate.Translate.Exp visit(TrueExpr e){
 		return new Ex(new CONST(1));
@@ -384,6 +389,64 @@ public class Translator
 		 
 	}
 	public Translate.Translate.Exp visit(VoidDecl e){
+		currMeth = e;
+		//System.out.println(e.name);
+		Translate.Tree.Stm varStms = null;
+		Translate.Tree.Stm bodyStms = null;
+		if(e.name.equals("main")){
+			//currFrame = (MipsFrame)type.newFrame(new Label(e.name), e.params.size());
+			currFrame = new MipsFrame(new Label(e.name));
+		}else{
+			//currFrame = (MipsFrame)type.newFrame(new Label(currClass.name + "." + e.name), e.params.size());
+			currFrame = new MipsFrame(new Label(currClass.name + "." + e.name));
+		}
+		
+		//for(int i = 0; i < e.params.size(); i++){
+			//tb.put(e.params.get(i).name, currFrame.allocFormal(false));
+		//}
+		//This should add the list of formals and actuals
+		e.checktype.accept(this);
+		if(e.locals.size() != 0){
+			varStms = e.locals.get(0).accept(this).unNx();
+			for(int i = 1; i < e.locals.size(); i++){
+				varStms = new SEQ(varStms, e.locals.get(i).accept(this).unNx());
+			}
+
+		}
+
+		if(e.stmts.size() != 0){
+			if(varStms == null){
+				bodyStms = e.stmts.get(0).accept(this).unNx();
+			}else{
+				bodyStms = new SEQ(varStms, e.stmts.get(0).accept(this).unNx());
+			}
+
+			for(int i = 1; i < e.stmts.size(); i++){
+				bodyStms = new SEQ(bodyStms , e.stmts.get(i).accept(this).unNx());
+			}
+
+		}else{
+			bodyStms = varStms;
+		}
+		//boolean flag = false;
+		
+
+		//if(varStms == null && bodyStms == null){
+			//flag = true;
+			//dont know what to do here
+			//System.out.println("wierd case");
+			//bodyStms = new MOVE(new TEMP(regs.get(2).temp), e.returnVal.accept(this).unEx());
+			
+		//}
+		
+		//if(!flag){
+			//uhhh
+		//	bodyStms = new SEQ(bodyStms, new MOVE(new TEMP(regs.get(2).temp), e.returnVal.accept(this).unEx()));
+		//}
+		
+
+		frags.add(new ProcFrag(bodyStms, currFrame));
+
 		return null; 
 	}
 	public Translate.Translate.Exp visit(WhileStmt e){
