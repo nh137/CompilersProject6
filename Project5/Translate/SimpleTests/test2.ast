@@ -24,13 +24,19 @@ Program(
        IdentifierExpr(y)
        q))
       VarDecl(IntegerType a
-      FieldExpr(
-       IdentifierExpr(y)
-       t))
+      AddExpr(
+       FieldExpr(
+        IdentifierExpr(y)
+        t)
+       IdentifierExpr(h)))
       VarDecl(IntegerType b
-      FieldExpr(
-       IdentifierExpr(y)
-       p)))
+      AddExpr(
+       FieldExpr(
+        IdentifierExpr(y)
+        p)
+       FieldExpr(
+        IdentifierExpr(y)
+        t))))
      AbstractList()
      IntegerLiteral(0))))
   ClassDecl(yellow null
@@ -44,9 +50,11 @@ Program(
      AbstractList()
      AbstractList(
       AssignStmt(
-       IdentifierExpr(q)
+       IdentifierExpr(t)
        IntegerLiteral(2)))
-     IntegerLiteral(6))
+     AddExpr(
+      IntegerLiteral(6)
+      IntegerLiteral(1)))
     MethodDecl(IntegerType two
      AbstractList()
      AbstractList()

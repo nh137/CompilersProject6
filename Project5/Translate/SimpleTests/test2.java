@@ -5,8 +5,8 @@ class test1{
 		int k = y.one();
 		int j = y.two();
 		int h = y.q;
-		int a = y.t;
-		int b = y.p;
+		int a = y.t + h;
+		int b = y.p + y.t;
 	}
 
 
@@ -18,8 +18,8 @@ class yellow{
 	int t;
 	int p;
 	public int one(){
-		q = 2;
-		return 6;
+		t = 2;
+		return 6+1;
 	}
 
 	public int two(){

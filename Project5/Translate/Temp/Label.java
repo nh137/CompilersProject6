@@ -15,6 +15,6 @@ public class Label {
 	}
 	
 	public String toString(){
-		return new String(name + ":");
+		return new String(name);
 	}
 }

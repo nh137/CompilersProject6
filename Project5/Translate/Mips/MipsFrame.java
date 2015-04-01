@@ -18,14 +18,27 @@ public class MipsFrame extends Frame{
 	//	this.name = n;
 	//}
 	
+	public MipsFrame(Label name){
+		//this.name = n;
+		//regs = new ArrayList<InReg>();
+		//for(int i = 0; i < 32; i++){
+		//	regs.add(new InReg(new Temp()));
+		//}
+		this.name = name;
+		FP = new Temp();
+		formals = new ArrayList<Access>();
+		badPtr = new Label("_BADPTR");
+		badSub = new Label("_BADSUB");
+	}
+	
 	public MipsFrame(){
 		//this.name = n;
-		regs = new ArrayList<InReg>();
-		for(int i = 0; i < 32; i++){
-			regs.add(new InReg(new Temp()));
-		}
-		badPtr = new Label("BADPTR");
-		badSub = new Label("BADSUB");
+		//regs = new ArrayList<InReg>();
+		//for(int i = 0; i < 32; i++){
+		//	regs.add(new InReg(new Temp()));
+		//}
+		badPtr = new Label("_BADPTR");
+		badSub = new Label("_BADSUB");
 	}
 	@Override
 	public Frame newFrame(Label name, int k) {
@@ -74,7 +87,7 @@ public class MipsFrame extends Frame{
 	
 	public void printFrame(java.io.PrintWriter writer){
 		writer.print("MipsFrame(\n");
-		writer.print(name+"\n");
+		writer.print(name+":\n");
 		writer.print("Formals(" + "InReg("+FP+")\n");
 		int i = 4;
 		for(Access a : formals){
