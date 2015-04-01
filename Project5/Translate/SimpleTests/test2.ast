@@ -1,0 +1,54 @@
+Program(
+ AbstractList(
+  ClassDecl(test1 null
+   AbstractList()
+   AbstractList(
+    MethodDecl(public_static_void main
+     AbstractList(
+      Formal(ArrayType(IdentifierType(String)) args))
+     AbstractList(
+      VarDecl(IdentifierType(yellow) y
+      NewObjectExpr(IdentifierType(yellow)))
+      VarDecl(IntegerType k
+      CallExpr(
+       IdentifierExpr(y)
+       one
+       AbstractList()))
+      VarDecl(IntegerType j
+      CallExpr(
+       IdentifierExpr(y)
+       two
+       AbstractList()))
+      VarDecl(IntegerType h
+      FieldExpr(
+       IdentifierExpr(y)
+       q))
+      VarDecl(IntegerType a
+      FieldExpr(
+       IdentifierExpr(y)
+       t))
+      VarDecl(IntegerType b
+      FieldExpr(
+       IdentifierExpr(y)
+       p)))
+     AbstractList()
+     IntegerLiteral(0))))
+  ClassDecl(yellow null
+   AbstractList(
+    VarDecl(IntegerType q null)
+    VarDecl(IntegerType t null)
+    VarDecl(IntegerType p null))
+   AbstractList(
+    MethodDecl(IntegerType one
+     AbstractList()
+     AbstractList()
+     AbstractList(
+      AssignStmt(
+       IdentifierExpr(q)
+       IntegerLiteral(2)))
+     IntegerLiteral(6))
+    MethodDecl(IntegerType two
+     AbstractList()
+     AbstractList()
+     AbstractList()
+     IntegerLiteral(7))))))
