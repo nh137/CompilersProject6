@@ -40,6 +40,9 @@ public class Translator
   }
   public Translate.Translate.Exp visit(AndExpr e){
   	//if else stuff
+	Translate.Tree.Exp left = e.e1.accept(this).unEx();
+	Translate.Tree.Exp right = e.e2.accept(this).unEx();
+	return new Ex( new BINOP(BINOP.AND, left, right)); 
 	  return null;
   }
   public Translate.Translate.Exp visit(ArrayExpr e){
@@ -217,7 +220,7 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
 
   }
   public Translate.Translate.Exp visit(NegExpr e){
- return null; 
+ 	return new Ex(e.e1.accept(this)); 
   }
   public Translate.Translate.Exp visit(NewArrayExpr e){
  return null; 
@@ -226,14 +229,18 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
  return null; 
   }
   public Translate.Translate.Exp visit(NotEqExpr e){
- return null; 
+  	Translate.Tree.Exp left = e.e1.accept(this).unEx();
+	Translate.Tree.Exp right = e.e2.accept(this).unEx();
+	return new Ex( new CJUMP(CJUMP.NE, left, right));
   }
   
   public Translate.Translate.Exp visit(NullExpr e){
  return null; 
   }
   public Translate.Translate.Exp visit(OrExpr e){
- return null; 
+  	Translate.Tree.Exp left = e.e1.accept(this).unEx();
+	Translate.Tree.Exp right = e.e2.accept(this).unEx();
+	return new Ex( new BINOP(BINOP.OR, left, right)); 
   }
   
   
@@ -248,7 +255,10 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
  return null; 
   }
   public Translate.Translate.Exp visit(StringLiteral e){
- return null; 
+	Label l = new Label();
+	String s = e.value;
+	Translate.Translate.DataFrag dfrag = new Translate.Translate.DataFrag(s,l);
+ 	return new LABEL(l); 
   }
   public Translate.Translate.Exp visit(SubExpr e){
   	Translate.Tree.Exp left = e.e1.accept(this).unEx();
@@ -263,7 +273,7 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
  return null; 
   }
   public Translate.Translate.Exp visit(TrueExpr e){
- return null; 
+ return new CONST(1); 
   }
  
   public Translate.Translate.Exp visit(VarDecl e){
@@ -273,7 +283,9 @@ public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int i
  return null; 
   }
   public Translate.Translate.Exp visit(WhileStmt e){
- return null; 
+	Translate.Tree.Exp tstStm = e.test.accept(this);
+	Translate.Tree.Exp bodyStm = e.body.accept(this);
+ 	return new Nx(); 
   }
   public Translate.Translate.Exp visit(XinuCallStmt e){
  return null; 
