@@ -33,7 +33,9 @@ public class DataFrag extends Frag{
 			s+="\n";
 			s+=data+"_vtable:\n";
 			for(Translate.Types.FUNCTION f : flist){
-				s+="\t.word "+data+"."+f.name;
+				Translate.Types.OBJECT o = (Translate.Types.OBJECT)f.self;
+				Translate.Types.CLASS c = o.myClass;
+				s+="\t.word "+c.name+"."+f.name;
 				s+="\n";
 			}
 		}else{
