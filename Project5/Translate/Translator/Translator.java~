@@ -40,7 +40,7 @@ public class Translator
 
 
 
-	public Translate.Translate.Exp visit(Absyn a){
+	public Translate.Exp visit(Absyn a){
 		return null; 
 	}
 	public Translate.Translate.Exp visit(AddExpr e){
@@ -220,6 +220,8 @@ public class Translator
 		//	new SEQ(new LABEL(fl), new SEQ(e.elseStmt.accept(this).unNx(), new SEQ(new JUMP(join)))
 		//		))); 
 		//return new IfThenElse();
+		//unCx the newly created ifthenelse TODO
+		//return new Nx();
 		return null;
 	}
 	public Translate.Translate.Exp visit(IntegerLiteral e){
@@ -230,8 +232,9 @@ public class Translator
 		return null;
 	}
 	public Translate.Translate.Exp visit(LesserExpr e){
-		Exp condi = new Exp
-		return new IfThenElseExp; 
+		Translate.Tree.Exp left = e.e1.accept(this).unEx();
+		Translate.Tree.Exp right = e.e2.accept(this).unEx();
+		return new Nx(new CJUMP(CJUMP.LT, left, right, new Label(), new Label()));
 	}
 	public Translate.Translate.Exp visit(MethodDecl e){
 		currMeth = e;
@@ -336,14 +339,12 @@ public class Translator
 		return null; 
 	}
 	public Translate.Translate.Exp visit(OrExpr e){
-		return null; 
-	}
-
-
-	public Translate.Translate.Exp visit(Program e){
-		for(ClassDecl c : e.classes){
-			c.checktype.accept(this);
-		}
+  	Translate.Tree.Exp left = e.e1.accept(this).unEx();
+	Translate.Tree.Exp right = e.e2.accept(this).unEx();
+	return new Ex( new BINOP(BINOP.OR, left, right)); 
+  }
+ 
+  public Translate.Translate.Exp visit(Program e){
 
 		for(ClassDecl c : e.classes){
 			c.accept(this);

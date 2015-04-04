@@ -338,14 +338,12 @@ public class Translator
 		return null; 
 	}
 	public Translate.Translate.Exp visit(OrExpr e){
-		return null; 
-	}
-
-
-	public Translate.Translate.Exp visit(Program e){
-		for(ClassDecl c : e.classes){
-			c.checktype.accept(this);
-		}
+  	Translate.Tree.Exp left = e.e1.accept(this).unEx();
+	Translate.Tree.Exp right = e.e2.accept(this).unEx();
+	return new Ex( new BINOP(BINOP.OR, left, right)); 
+  }
+ 
+  public Translate.Translate.Exp visit(Program e){
 
 		for(ClassDecl c : e.classes){
 			c.accept(this);
