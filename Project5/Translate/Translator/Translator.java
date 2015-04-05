@@ -51,12 +51,33 @@ public class Translator
 	}
 	public Translate.Translate.Exp visit(AndExpr e){
 		//if else stuff
-		return null;
+		
+		IfThenElseExp ift = new IfThenElseExp();
+		ift.newIfThenElseExp(e.e1.accept(this), e.e2.accept(this),
+				new Ex(new CONST(0)));
+		return ift;
+		//return null;
 	}
 	public Translate.Translate.Exp visit(ArrayExpr e){
-		Translate.Tree.Exp left = e.target.accept(this).unEx();
-		Translate.Tree.Exp right = e.index.accept(this).unEx();
-		return new Ex(new BINOP(BINOP.PLUS, left, right));
+		//Translate.Tree.Exp left = e.target.accept(this).unEx();
+		//Translate.Tree.Exp right = e.index.accept(this).unEx();
+		//return new Ex(new BINOP(BINOP.PLUS, left, right));
+		//InReg r = (InReg)tb.get(((IdentifierExpr)e.target).id) ;
+		TEMP t = new TEMP(new Temp());
+		TEMP t1 = new TEMP(new Temp());
+		LABEL l0 = new LABEL(new Label());
+		LABEL l1 = new LABEL(new Label());
+		LABEL l2 = new LABEL(new Label());
+		SEQ s1 = new SEQ(l1, new CJUMP(5, t1,new MEM(new BINOP(0, t, new CONST(-4))) ,currFrame.badSub(), l2.label ));
+		SEQ s2 = new SEQ(new CJUMP(CJUMP.LT, t1, new CONST(0), currFrame.badSub(), l1.label) , s1);
+		SEQ s3 = new SEQ(l0, s2);
+		SEQ s4 = new SEQ(new CJUMP(0, t, new CONST(0),currFrame.badPtr(), l0.label), s3);
+		SEQ s5 = new SEQ(new MOVE(t1, e.index.accept(this).unEx()), s4);
+		SEQ s6 = new SEQ(new MOVE(t, e.target.accept(this).unEx()), s5);
+		BINOP b = new BINOP(0, t, new BINOP(2, t1, new CONST(4)));
+		ESEQ e1 = new ESEQ(l2 , new MEM(b));
+		ESEQ e2 = new ESEQ(s6, e1);
+		return new Ex(e2);
 
 	}
 	public Translate.Translate.Exp  visit(ArrayType e){
@@ -77,7 +98,14 @@ public class Translator
 		//if (e.stmts.size() > 1)
 		//return new Nx(new SEQ(e.stmts.get(0).accept(this).unEx(),sequenceSubTree(e.stmts,1))); 
 		//else if (e.stmts.size() == 0)
-		return null;
+		Stm s = e.stmts.get(0).accept(this).unNx();
+		if (e.stmts.size() > 1){
+			for(int i = 1; i < e.stmts.size(); i++){
+				s = new SEQ(s, e.stmts.get(i).accept(this).unNx());
+			}
+		}
+		return new Nx(s);
+		//return null;
 	}  
 	//public Translate.Tree.Exp sequenceSubTree(java.util.LinkedList<Stmt> list, int index)
 	//{
@@ -94,9 +122,10 @@ public class Translator
 	public Translate.Translate.Exp visit(CallExpr e){
 		//TODO taking for granted that target is identifier
 				MOVE m;
+				Translate.Tree.Exp before = e.target.accept(this).unEx();
 				TEMP t = new TEMP(new Temp());
 				//if(e.target instanceof IdentifierExpr){
-					m = new MOVE(t, e.target.accept(this).unEx());
+					m = new MOVE(t, before);
 				//}else{
 					///do something
 				//}
@@ -119,7 +148,7 @@ public class Translator
 	public Translate.Translate.Exp visit(ClassDecl e){
 		//checktype, should make datafrag from instance
 		currClass = e;
-		//..e.checktype.accept(this);
+		//e.checktype.accept(this);
 
 		for(MethodDecl m : e.methods){
 			m.accept(this);
@@ -161,7 +190,7 @@ public class Translator
 	public Translate.Translate.Exp visit(GreaterExpr e){
 		Translate.Tree.Exp left = e.e1.accept(this).unEx();
 		Translate.Tree.Exp right = e.e2.accept(this).unEx();
-		return new Nx(new CJUMP(CJUMP.GT, left, right, new Label(), new Label()));
+		return new RelCx(CJUMP.GT, left, right);
 	}
 
 	public Translate.Translate.Exp visit(IdentifierExpr e){
@@ -222,19 +251,34 @@ public class Translator
 		//return new IfThenElse();
 		//unCx the newly created ifthenelse TODO
 		//return new Nx();
-		return null;
+		
+		//Label tru = new Label();
+		//Label fal = new Label();
+		//Label join = new Label();
+		//Translate.Tree.Stm cj = e.test.accept(this).unCx(tru, fal);
+		//SEQ s1 = new SEQ(new LABEL(tru), );
+		
+		IfThenElseExp ift = new IfThenElseExp();
+		ift.newIfThenElseExp(e.test.accept(this), e.thenStmt.accept(this),
+				e.elseStmt.accept(this));
+		return ift;
+		
+		
+		
+		//return null;
 	}
 	public Translate.Translate.Exp visit(IntegerLiteral e){
 		return new Ex(new CONST(e.value));
 
 	}
 	public Translate.Translate.Exp visit(IntegerType e){
-		return null;
+		return new Ex(new CONST(0));
 	}
 	public Translate.Translate.Exp visit(LesserExpr e){
 		Translate.Tree.Exp left = e.e1.accept(this).unEx();
 		Translate.Tree.Exp right = e.e2.accept(this).unEx();
-		return new Nx(new CJUMP(CJUMP.LT, left, right, new Label(), new Label()));
+		return new RelCx(CJUMP.LT, left, right);
+		//return new Nx(new CJUMP(CJUMP.LT, left, right, new Label(), new Label()));
 	}
 	public Translate.Translate.Exp visit(MethodDecl e){
 		currMeth = e;
@@ -270,7 +314,9 @@ public class Translator
 			}
 
 			for(int i = 1; i < e.stmts.size(); i++){
-				bodyStms = new SEQ(bodyStms , e.stmts.get(i).accept(this).unNx());
+				//System.out.println(e.stmts.size());
+				Translate.Translate.Exp ch = e.stmts.get(i).accept(this);
+				bodyStms = new SEQ(bodyStms , ch.unNx());
 			}
 
 		}else{
@@ -306,15 +352,20 @@ public class Translator
 
 	}
 	public Translate.Translate.Exp visit(NegExpr e){
-		return null; 
+		return new Ex(new BINOP(1, new CONST(0), e.e1.accept(this).unEx()));
 	}
 	public Translate.Translate.Exp visit(NewArrayExpr e){
-		return null; 
+		ArrayList<Translate.Tree.Exp> args = new ArrayList<Translate.Tree.Exp>();
+		
+		TEMP t = new TEMP(new Temp());
+		args.add(t);
+		args.add(t);
+		return new Ex(new ESEQ(new MOVE(t, e.dimensions.get(0).accept(this).unEx() ), new CALL(new NAME(new Label("_new")), args)));
 	}
 	public Translate.Translate.Exp visit(NewObjectExpr e){
 		String s = ((IdentifierType)e.type).id;
 		
-		
+		//System.out.println(s);
 		OBJECT o = (OBJECT)objectTb.get(s);
 		//if(o.myClass.name.equals()){
 		int k;
@@ -331,19 +382,29 @@ public class Translator
 		
 	}
 	public Translate.Translate.Exp visit(NotEqExpr e){
-		return null; 
+		Translate.Tree.Exp left = e.e1.accept(this).unEx();
+		Translate.Tree.Exp right = e.e2.accept(this).unEx();
+		return new RelCx(CJUMP.NE, left, right); 
 	}
 
 	public Translate.Translate.Exp visit(NullExpr e){
-		return null; 
+		return new Ex(new CONST(0)); 
 	}
 	public Translate.Translate.Exp visit(OrExpr e){
-  	Translate.Tree.Exp left = e.e1.accept(this).unEx();
-	Translate.Tree.Exp right = e.e2.accept(this).unEx();
-	return new Ex( new BINOP(BINOP.OR, left, right)); 
+		IfThenElseExp ift = new IfThenElseExp();
+		Translate.Translate.Exp e1 = e.e1.accept(this);
+		Translate.Translate.Exp e2 = e.e2.accept(this);
+		
+		ift.newIfThenElseExp(e1, new Ex(new CONST(1)),
+				e2);
+		return ift;
   }
  
   public Translate.Translate.Exp visit(Program e){
+	  
+	  for(ClassDecl c : e.classes){
+		  		c.checktype.accept(this);
+		  	}
 
 		for(ClassDecl c : e.classes){
 			c.accept(this);
@@ -355,7 +416,10 @@ public class Translator
 		return null; 
 	}
 	public Translate.Translate.Exp visit(StringLiteral e){
-		return null; 
+		//TODO: make new datafrag
+		Label l = new Label();
+		frags.add(new DataFrag(e.value, l));
+		return new Ex(new NAME(l));
 	}
 	public Translate.Translate.Exp visit(SubExpr e){
 		Translate.Tree.Exp left = e.e1.accept(this).unEx();
@@ -364,11 +428,21 @@ public class Translator
 
 	}
 	public Translate.Translate.Exp visit(ThisExpr e){
-		return null; 
+		return new Ex(new TEMP(currFrame.FP));
+//		TEMP t = new TEMP(new Temp());
+//		Label l = new Label();
+//		SEQ s = new SEQ(new MOVE(new TEMP(currFrame.FP.temp), t), new SEQ(
+//				new CJUMP(0, t, new CONST(0), currFrame.badPtr(), l),
+//				new LABEL(l)));
+//		java.util.ArrayList<Translate.Tree.Exp> argsList = new java.util.ArrayList<Translate.Tree.Exp>();
+//		argsList.add(t);
+//		CALL c = new CALL(new MEM(new BINOP(0, new MEM(new BINOP(0, t, new CONST(-4))), new CONST(e.typeIndex*4))),t);
+		
 	}
 	public Translate.Translate.Exp visit(ThreadDecl e){
 		currClass = e;
-		//..e.checktype.accept(this);
+		//System.out.println("threaddecl calls type");
+		//e.checktype.accept(this);
 
 		for(MethodDecl m : e.methods){
 			m.accept(this);
@@ -451,13 +525,32 @@ public class Translator
 		return null; 
 	}
 	public Translate.Translate.Exp visit(WhileStmt e){
-		return null; 
+		Label done = new Label();
+		Label start = new Label();
+		Label body = new Label();
+		Stm bodyCon = e.test.accept(this).unCx(body, done);
+		SEQ s = new SEQ(new LABEL(start),bodyCon);
+		SEQ s2 = new SEQ(new SEQ(new LABEL(body), e.body.accept(this).unNx()), new JUMP(start));
+		return new Nx (new SEQ(new SEQ(s, s2), new LABEL(done)));
+		
+		//return new Nx();
 	}
 	public Translate.Translate.Exp visit(XinuCallStmt e){
-		return null; 
+		 
+		ArrayList<Translate.Tree.Exp> args = new ArrayList<Translate.Tree.Exp>();
+		for(Expr e1 : e.args){
+			args.add(e1.accept(this).unEx());
+		}
+		
+		return new Ex(new CALL(new NAME(new Label("_"+e.method)), args));
 	}
 	public Translate.Translate.Exp visit(XinuCallExpr e){
-		return null; 
+		ArrayList<Translate.Tree.Exp> args = new ArrayList<Translate.Tree.Exp>();
+		for(Expr e1 : e.args){
+			args.add(e1.accept(this).unEx());
+		}
+		
+		return new Ex(new CALL(new NAME(new Label("_"+e.method)), args));
 	}
 
 	public Translate.Translate.Exp visit(ARRAY a){
@@ -476,6 +569,7 @@ public class Translator
 		for(FIELD f: a.instance.methods.fields){
 			dfrag.flist.add(((FUNCTION)f.type));
 		}
+		//System.out.println(a.name);
 	
 		objectTb.put(a.name, a.instance);
 		frags.add(dfrag);

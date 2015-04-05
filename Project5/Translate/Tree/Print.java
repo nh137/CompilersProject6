@@ -163,11 +163,11 @@ public void visit(JUMP n) {
     out.println("JUMP(");
     indent += 2; printIndent();
     n.exp.accept(this);
-    out.println();
+    //out.println();
     for(int i=0; i<n.targets.size(); i++){
-    	out.println(")");
+    	out.println();
 	n.targets.get(i).toString();
-	out.println();
+	//out.println();
     }
     indent -= 2;
     out.print(")");
@@ -207,9 +207,15 @@ public void visit(SEQ n) {
 // TODO Auto-generated method stub
     out.println("SEQ(");
     indent += 2; printIndent();
-    n.left.accept(this);
+    if(n.left != null){
+    	n.left.accept(this);
+    }
+    
     out.println();printIndent();
-    n.right.accept(this);
+    if(n.right!= null){
+    	n.right.accept(this);
+    }
+    
     indent -= 2;
     out.print(")");
 }

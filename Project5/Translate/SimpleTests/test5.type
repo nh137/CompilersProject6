@@ -1,44 +1,64 @@
 Program(
  AbstractList(
-  ClassDecl(test1 null
+  ClassDecl(Main null
    AbstractList()
    AbstractList(
     MethodDecl(public_static_void main
      AbstractList(
       Formal(ArrayType(IdentifierType(String)) args))
      AbstractList(
-      VarDecl(IntegerType k null 
+      VarDecl(BooleanType b
+       FalseExpr 
+       BOOLEAN)
+      VarDecl(BooleanType c
+       TrueExpr 
+       BOOLEAN)
+      VarDecl(IntegerType k
+       IntegerLiteral(8) 
+       INT)
+      VarDecl(IntegerType j
+       IntegerLiteral(4) 
        INT))
      AbstractList(
-      AssignStmt(
-       IdentifierExpr(k)
-       XinuCallExpr(readint
-        AbstractList())))
+      IfStmt(
+       NotEqExpr(
+        IdentifierExpr(j)
+        IdentifierExpr(k))
+       BlockStmt(
+        AbstractList(
+         AssignStmt(
+          IdentifierExpr(k)
+          IntegerLiteral(6))))
+       BlockStmt(
+        AbstractList(
+         AssignStmt(
+          IdentifierExpr(k)
+          IntegerLiteral(2))))))
      IntegerLiteral(0)
      FUNCTION(main
-      OBJECT(test1)
+      OBJECT(Main)
       RECORD(
        FIELD(0 args
         ARRAY(
          OBJECT(String))))
       VOID)))
-   CLASS(test1
+   CLASS(Main
     null
     RECORD(
      FIELD(0 main
       FUNCTION(main
-       OBJECT(test1)
+       OBJECT(Main)
        RECORD(
         FIELD(0 args
          ARRAY(
           OBJECT(String))))
        VOID)))
     RECORD()
-    OBJECT(test1
+    OBJECT(Main
      RECORD(
       FIELD(0 main
        FUNCTION(main
-        OBJECT(test1)
+        OBJECT(Main)
         RECORD(
          FIELD(0 args
           ARRAY(

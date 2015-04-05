@@ -182,7 +182,27 @@ SEQ(
      BINOP(PLUS
       TEMP(t47)
       CONST(4)))))
-  CONST(2))
+  ESEQ(
+   SEQ(
+    MOVE(
+     TEMP(t48)
+     TEMP(t46))
+    SEQ(
+     CJUMP(EQ
+      TEMP(t48)
+      CONST(0)
+      _BADPTR L7)
+     LABEL(L7)))
+   CALL(
+    MEM(
+     BINOP(PLUS
+      MEM(
+       BINOP(PLUS
+        TEMP(t48)
+        CONST(-4)))
+      CONST(4)))
+    TEMP(t48)
+   )))
  MOVE(
   TEMP(t2)
   BINOP(PLUS
@@ -192,7 +212,7 @@ SEQ(
 ProcFrag(
 MipsFrame(
 yellow.two:
-Formals(InReg(t48)
+Formals(InReg(t49)
 	)
 Actuals(InReg(t4)
 	)

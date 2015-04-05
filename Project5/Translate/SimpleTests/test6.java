@@ -1,12 +1,12 @@
 class test1{
 
 	public static void main(String[] args){
-		yellow y = new yellow();
-		int k = y.one();
-		int j = y.two();
-		int h = y.q;
-		int a = y.t + h;
-		int b = y.p + y.t;
+		boolean c = false;
+		int i;
+		while(c){
+			i = 1;
+		}
+
 	}
 
 
@@ -23,6 +23,7 @@ class yellow{
 	}
 
 	public int two(){
+		Xinu.print("Green");
 		return 7;
 	}
 

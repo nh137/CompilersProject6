@@ -7,13 +7,18 @@ Program(
      AbstractList(
       Formal(ArrayType(IdentifierType(String)) args))
      AbstractList(
-      VarDecl(IntegerType k null 
-       INT))
+      VarDecl(ArrayType(IntegerType) k
+       NewArrayExpr(IntegerType
+        AbstractList(
+         IntegerLiteral(16))) 
+       ARRAY(
+        INT)))
      AbstractList(
       AssignStmt(
-       IdentifierExpr(k)
-       XinuCallExpr(readint
-        AbstractList())))
+       ArrayExpr(
+        IdentifierExpr(k)
+        IntegerLiteral(2))
+       IntegerLiteral(71)))
      IntegerLiteral(0)
      FUNCTION(main
       OBJECT(test1)

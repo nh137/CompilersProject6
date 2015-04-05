@@ -8,7 +8,7 @@ import Translate.Tree.LABEL;
 import Translate.Tree.MOVE;
 import Translate.Tree.SEQ;
 import Translate.Tree.Stm;
-import Translate.Tree.TEMP;
+import Translate.Tree.TEMP;import Translate.Tree.CJUMP;
 
 public class RelCx extends Cx{
 	public  Translate.Tree.Exp le;
@@ -26,6 +26,11 @@ public class RelCx extends Cx{
 		return new CJUMP(operator, le , re, t, f);
 	}
 	
+	@Override
+	public Stm unNx() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 
 }

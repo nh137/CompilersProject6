@@ -13,11 +13,11 @@ public class CJUMP extends Stm{
 	public static final int	ULE	=7;
 	public static final int	ULT	=6;
 	
-	Translate.Temp.Label iffalse;
-	Translate.Temp.Label iftrue;
-	Exp left;
-	int relop;
-	Exp right;
+	public Translate.Temp.Label iffalse;
+	public Translate.Temp.Label iftrue;
+	public Exp left;
+	public int relop;
+	public Exp right;
 
 	public CJUMP(int rel, Exp l, Exp r, Translate.Temp.Label t, Translate.Temp.Label f){
 		relop = rel;

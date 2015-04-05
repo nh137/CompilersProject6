@@ -1,12 +1,12 @@
 package Translate.Absyn;
 
 public class IfStmt extends Stmt{
-	public Expr test1;
+	public Expr test;
 	public Stmt thenStmt;
 	public Stmt elseStmt;
 	
-	public IfStmt(Expr test1, Stmt y, Stmt u){
-		this.test1 = test1;
+	public IfStmt(Expr test, Stmt y, Stmt u){
+		this.test = test;
 		this.thenStmt = y;
 		this.elseStmt = u;
 	}

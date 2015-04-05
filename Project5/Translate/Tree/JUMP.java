@@ -2,8 +2,8 @@ package Translate.Tree;
 
 public class JUMP extends Stm{
 	
-	Exp exp;
-	java.util.LinkedList<Translate.Temp.Label> targets;
+	public Exp exp;
+	public java.util.LinkedList<Translate.Temp.Label> targets;
 	
 	public JUMP(Exp e, java.util.LinkedList<Translate.Temp.Label> t){
 		exp =e;
@@ -11,8 +11,9 @@ public class JUMP extends Stm{
 	}
 	
 	public JUMP(Translate.Temp.Label target){
-		targets = new java.util.LinkedList<Translate.Temp.Label>();
-		targets.add(target);
+//		targets = new java.util.LinkedList<Translate.Temp.Label>();
+//		targets.add(target);
+		this(new NAME(target), new java.util.LinkedList<Translate.Temp.Label>());
 	}
 
 	@Override

@@ -11,10 +11,10 @@ public abstract class Cx extends Exp{
 	}
 
 	//@Override
-	abstract Stm unCx(Label t, Label f);
+	//abstract Stm unCx(Label t, Label f);
 	
 	@Override
-	Translate.Tree.Exp unEx() {
+	public Translate.Tree.Exp unEx() {
 		Temp r = new Temp();
 		Label t = new Label();
 		Label f = new Label();
@@ -27,9 +27,9 @@ public abstract class Cx extends Exp{
 												new LABEL(t))))),
 												new TEMP(r));
 	}
-	@Override
-	Translate.Tree.Stm unNx(){
-		return null;
-	}
+	//@Override
+	//Translate.Tree.Stm unNx(){
+	//	return null;
+	//}
 
 }

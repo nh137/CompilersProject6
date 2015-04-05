@@ -4,12 +4,13 @@ class Main{
 
 		boolean b = false;
 		boolean c = true;
-		int k;
-		if(c || b){
+		int k = 8;
+		int j = 4;
+		if(j != k){
+				
 			k = 6;
 		}else{
-			k = 7;
-
+			k = 2;
 		}
 
 	}

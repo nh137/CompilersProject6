@@ -7,30 +7,173 @@ public class IfThenElseExp extends Exp{
 	public Label t = new Label();
 	public Label f = new Label();
 	public Label join = new Label();
-	public IfThenElseExp(Exp cc, Exp aa, Exp bb) {
+	
+	public IfThenElseExp(){
+		;
+	}
+	public void newIfThenElseExp(Exp cc, Exp aa, Exp bb) {
 	cond=cc; a=aa; b=bb;
 	}
 	public Stm unCx(Label tt, Label ff) {
-		Stm tStm = a.unCx(tt, ff);
-		Stm fStm = b.unCx(tt, ff);
-		CJUMP cj = new CJUMP(CJUMP.NE, cond.unEx(), new CONST(0), t, f);
-		SEQ s1 = new SEQ(t, tStm);
-		SEQ s2 = new SEQ(f, fStm);
-		return new SEQ(cj, new SEQ(s1, s2));
+//		Stm tStm = a.unCx(tt, ff);
+//		Stm fStm = b.unCx(tt, ff);
+//		CJUMP cj = new CJUMP(CJUMP.NE, cond.unEx(), new CONST(0), t, f);
+//		SEQ s1 = new SEQ(new LABEL(t), tStm);
+//		SEQ s2 = new SEQ(new LABEL(f), fStm);
+//	
+//		return new SEQ(cj, new SEQ(s1, s2));
+		
+		
+//		return new SEQ(cond.unCx(t, f),new SEQ(new SEQ(new LABEL(t),a.unCx(tt, ff)),
+//				new SEQ(new LABEL(f),b.unCx(tt, ff))));
+		
+		
+		Stm aStm = a.unCx(tt, ff);
+		if (aStm instanceof JUMP) {
+			JUMP aJump = (JUMP) aStm;
+			if (aJump.exp instanceof NAME) {
+				System.out.println("HIT");
+				NAME aName = (NAME) aJump.exp;
+				aStm = null;
+				t = aName.label;
+			}
+		}
+		Stm bStm = b.unCx(tt, ff);
+		if (bStm instanceof JUMP) {
+			JUMP bJump = (JUMP) bStm;
+			if (bJump.exp instanceof NAME) {
+				System.out.println("HIT");
+				NAME bName = (NAME) bJump.exp;
+				bStm = null;
+				f = bName.label;
+			}
+		}
+		
+		
+		Stm condStm = cond.unCx(t, f);
+
+		if (aStm == null && bStm == null)
+			return condStm;
+		if (aStm == null)
+			return new SEQ(condStm, new SEQ(new LABEL(f), bStm));
+		if (bStm == null)
+			return new SEQ(condStm, new SEQ(new LABEL(t), aStm));
+		return new SEQ(condStm, new SEQ(new SEQ(new LABEL(t), aStm), new SEQ(new LABEL(f), bStm)));
 	}
 	public Translate.Tree.Exp unEx() {
+//		Translate.Tree.Exp tExp = a.unEx();
+//		Translate.Tree.Exp fExp = b.unEx();
+//		Stm c = cond.unCx(t, f);
+//		TEMP r = new TEMP(new Translate.Temp.Temp());
+//		
+//		SEQ s1 = new SEQ(new LABEL(f), new SEQ(new MOVE(r, fExp), new JUMP(join)));
+//		
+//		SEQ s2 = new SEQ(c, new SEQ(new LABEL(t), new SEQ(new MOVE(r, tExp), new JUMP(join))), s1);
+//		
+//		return new ESEQ(new SEQ(s2, new LABEL(join)), r);
+		//return new LABEL(new Label("LOSER"));
+
+		//return null;
+		//return null;
+		//Temp r = new Temp();
+		//SEQ s1 = new SEQ(new MOVE(new TEMP(r)n, e2.unEx()), JUMP(new NAME(join), new java.util.LinkedList<Label>()));
+		//SEQ s2 = new SEQ()
+		Temp r = new Temp();
 		Translate.Tree.Exp tExp = a.unEx();
 		Translate.Tree.Exp fExp = b.unEx();
-		Stm c = cond.unCx(t, f);
-		TEMP r = new Translate.Temp.Temp();
 		
-		SEQ s1 = new SEQ(f, new SEQ(new MOVE(r, fExp), new JUMP(fExp, join)));
+		//maybe
+		if (tExp == null)
+			return null;
+	
+		if (tExp == null)
+			return null;
+//		if(tExp instanceof CONST && tExp instanceof CONST){
+//			CONST tc = (CONST)tExp;
+//			CONST fc = (CONST)fExp;
+//			if(tc.value == 0 && fc.value == 0){
+//				return r;
+//			}else if(tc.value == 1 && fc.value == 1){
+//				return r;
+//			}
+//		}
 		
-		SEQ s2 = new SEQ(c, new SEQ(t, new SEQ(new MOVE(r, tExp), new JUMP(tExp, join))), s1));
+		return new ESEQ(new SEQ(new SEQ(cond.unCx(t, f),new SEQ(new SEQ(new LABEL(t),
+				new SEQ(new MOVE(new TEMP(r),tExp),
+						new JUMP(join))),
+						new SEQ(new LABEL(f),
+						new SEQ(new MOVE(new TEMP(r),fExp),
+								new JUMP(join))))),
+								new LABEL(join)),new TEMP(r));
 		
-		return new ESEQ(new SEQ(s2, join), r);
+		
+		
 	}
 	public Stm unNx() {
-		return null;
+//		CJUMP cj = new CJUMP(1, cond.unEx(), new CONST(0), t, f);
+//		SEQ st = new SEQ(new LABEL(t), a.unNx()); 
+//		SEQ tj = new SEQ(st, new JUMP(new NAME(join), new java.util.LinkedList<Label>()));
+//		SEQ sf = new SEQ(new LABEL(f), b.unNx()); 
+//		SEQ fj = new SEQ(sf, new JUMP(new NAME(join), new java.util.LinkedList<Label>()));
+//		SEQ tjfj = new SEQ(tj, fj);
+//		SEQ s1 = new SEQ(cj, tjfj);
+//		return new SEQ(s1, new LABEL(join));
+		
+//		if (b == null){
+//            return new SEQ(cond.unCx(t, join),
+//                            new SEQ(new LABEL(t),
+//                            new SEQ(a.unNx(),
+//                            new LABEL(join))));
+//		}else{
+//            return new SEQ(cond.unCx(t, f),
+//                            new SEQ(new LABEL(t),
+//                            new SEQ(a.unNx(),
+//                            new SEQ(new JUMP(new NAME(join), new java.util.LinkedList<Label>()),
+//                            new SEQ(new LABEL(f),
+//                            new SEQ(b.unNx(),
+//                            new LABEL(join)))))));
+//		}
+		
+		Stm aStm = a.unNx();
+		if (aStm == null){
+		//if (aStm instanceof JUMP){
+			t = join;
+		}else{
+			aStm = new SEQ(new SEQ(new LABEL(t), aStm), new JUMP(join));
+		}
+		Stm bStm = b.unNx();
+		if (bStm == null){
+		//if (bStm instanceof JUMP){
+			f = join;
+		}else{
+			bStm = new SEQ(new SEQ(new LABEL(f), bStm), new JUMP(join));
+		}
+		Stm condStm = cond.unCx(t, f);
+		if (aStm == null && bStm == null){
+			return cond.unNx();
+		}
+		
+		
+		if (aStm == null){
+			return new SEQ(new SEQ(condStm, bStm), new LABEL(join));
+		}
+		if (bStm == null){
+			return new SEQ(new SEQ(condStm, aStm), new LABEL(join));
+		}
+		
+		
+		
+		
+
+		
+		//if (bStm == null)
+		
+
+		
+
+		return new SEQ(new SEQ(condStm, new SEQ(aStm, bStm)), new LABEL(join));
+		
+		
+		
 	}
 }

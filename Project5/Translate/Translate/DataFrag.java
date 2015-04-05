@@ -28,9 +28,9 @@ public class DataFrag extends Frag{
 	
 	public String toString(){
 		String s;
-		s = "\t.data";
+		s = "\t.data\n";
 		if(label == null){
-			s+="\n";
+			
 			s+=data+"_vtable:\n";
 			for(Translate.Types.FUNCTION f : flist){
 				Translate.Types.OBJECT o = (Translate.Types.OBJECT)f.self;
@@ -39,7 +39,8 @@ public class DataFrag extends Frag{
 				s+="\n";
 			}
 		}else{
-			//String case
+
+			s+= label+":\t.asciiz\t"+ data;
 		}
 		return s;
 	}

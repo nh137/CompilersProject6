@@ -28,7 +28,18 @@ public class Ex extends Exp{
 //		}else
 //			return new JUMP(f);
 		
-		return new CJUMP(1,exp, new CONST(0), t,f);
+		if(exp instanceof CONST){
+			CONST con = (CONST)exp;
+			if(con.value == 0){
+				return new JUMP(f);
+			}else{
+				return new JUMP(t);
+			}
+		}else{
+			return new CJUMP(1,exp, new CONST(0), t,f);
+		}
+		
+		
 	}
 	
 }

@@ -104,7 +104,8 @@ public class Main
 					new Translate.Tree.Print(writer, p.body);
 					writer.println();
 				}else{
-					writer.println("BODY IS NULL");
+					//writer.println("BODY IS NULL");
+					writer.println();
 				}
 				writer.println(")");
 			}

@@ -7,10 +7,14 @@ Program(
      AbstractList(
       Formal(ArrayType(IdentifierType(String)) args))
      AbstractList(
-      VarDecl(IntegerType k null))
+      VarDecl(ArrayType(IntegerType) k
+      NewArrayExpr(IntegerType
+       AbstractList(
+        IntegerLiteral(16)))))
      AbstractList(
       AssignStmt(
-       IdentifierExpr(k)
-       NegExpr(
-        IntegerLiteral(6))))
+       ArrayExpr(
+        IdentifierExpr(k)
+        IntegerLiteral(2))
+       IntegerLiteral(71)))
      IntegerLiteral(0))))))

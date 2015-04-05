@@ -1,7 +1,7 @@
 package Translate.Tree;
 
 public class CONST extends Exp{
-	int value;
+	public int value;
 	public CONST(int v){
 		value = v;
 	}
