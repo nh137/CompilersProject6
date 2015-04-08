@@ -141,6 +141,9 @@ public class Translator
 				argsList.add(t);
 				for (int i=0;i<e.args.size();i++)
 				{ argsList.add(e.args.get(i).accept(this).unEx()); }
+				if(e.typeIndex*4 == 28){
+					System.out.println(currMeth.name);
+				}
 				CALL c = new CALL(new MEM(new BINOP(0, new MEM(new BINOP(0, t, new CONST(-4))), new CONST(e.typeIndex*4))),argsList);
 				return new Ex(new ESEQ(s1, c));
 	}
