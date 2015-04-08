@@ -257,10 +257,25 @@ public class Translator
 		//Label join = new Label();
 		//Translate.Tree.Stm cj = e.test.accept(this).unCx(tru, fal);
 		//SEQ s1 = new SEQ(new LABEL(tru), );
-		
 		IfThenElseExp ift = new IfThenElseExp();
-		ift.newIfThenElseExp(e.test.accept(this), e.thenStmt.accept(this),
-				e.elseStmt.accept(this));
+		if(e.elseStmt == null && e.thenStmt == null){
+			ift.newIfThenElseExp(e.test.accept(this), null,
+					null);
+		}else if(e.elseStmt == null){
+			ift.newIfThenElseExp(e.test.accept(this), e.thenStmt.accept(this),
+					null);
+		}else if(e.thenStmt == null){
+			ift.newIfThenElseExp(e.test.accept(this), null,
+					e.elseStmt.accept(this));
+		
+			
+		}else{
+			ift.newIfThenElseExp(e.test.accept(this), e.thenStmt.accept(this),
+					e.elseStmt.accept(this));
+		}
+		
+		
+		
 		return ift;
 		
 		
@@ -385,6 +400,14 @@ public class Translator
 		Translate.Tree.Exp left = e.e1.accept(this).unEx();
 		Translate.Tree.Exp right = e.e2.accept(this).unEx();
 		return new RelCx(CJUMP.NE, left, right); 
+	}
+	
+	public Translate.Translate.Exp visit(NotExpr e){
+		Translate.Tree.Exp ex = e.e1.accept(this).unEx();
+		//Translate.Tree.Exp right = e.e2.accept(this).unEx();
+		
+		
+		return new Ex(new BINOP(BINOP.BITXOR, ex, new CONST(1))); 
 	}
 
 	public Translate.Translate.Exp visit(NullExpr e){

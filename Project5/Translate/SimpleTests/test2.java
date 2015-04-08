@@ -2,7 +2,7 @@ class test1{
 
 	public static void main(String[] args){
 		yellow y = new yellow();
-		int k = y.one();
+		int k = y.one(7);
 		int j = y.two();
 		int h = y.q;
 		int a = y.t + h;
@@ -17,9 +17,9 @@ class yellow{
 	int q;
 	int t;
 	int p;
-	public int one(){
+	public int one(int j){
 		t = this.two();
-		return 6+1;
+		return j+1;
 	}
 
 	public int two(){

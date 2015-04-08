@@ -28,26 +28,42 @@ public class IfThenElseExp extends Exp{
 //				new SEQ(new LABEL(f),b.unCx(tt, ff))));
 		
 		
-		Stm aStm = a.unCx(tt, ff);
-		if (aStm instanceof JUMP) {
-			JUMP aJump = (JUMP) aStm;
-			if (aJump.exp instanceof NAME) {
-				System.out.println("HIT");
-				NAME aName = (NAME) aJump.exp;
-				aStm = null;
-				t = aName.label;
+		Stm aStm = null;
+		if(a == null){
+			System.out.println("a is null");
+		}else{
+			aStm = a.unCx(tt, ff);
+			if (aStm instanceof JUMP) {
+				JUMP aJump = (JUMP) aStm;
+				if (aJump.exp instanceof NAME) {
+					//System.out.println("HIT");
+					NAME aName = (NAME) aJump.exp;
+					aStm = null;
+					t = aName.label;
+				}
 			}
 		}
-		Stm bStm = b.unCx(tt, ff);
-		if (bStm instanceof JUMP) {
-			JUMP bJump = (JUMP) bStm;
-			if (bJump.exp instanceof NAME) {
-				System.out.println("HIT");
-				NAME bName = (NAME) bJump.exp;
-				bStm = null;
-				f = bName.label;
+		
+			
+			
+		Stm bStm = null;
+		
+		if(b == null){
+			System.out.println("b is null");
+		}else{
+			bStm = b.unCx(tt, ff);
+			if (bStm instanceof JUMP) {
+				JUMP bJump = (JUMP) bStm;
+				if (bJump.exp instanceof NAME) {
+					//System.out.println("HIT");
+					NAME bName = (NAME) bJump.exp;
+					bStm = null;
+					f = bName.label;
+				}
 			}
 		}
+		
+		
 		
 		
 		Stm condStm = cond.unCx(t, f);
@@ -97,6 +113,18 @@ public class IfThenElseExp extends Exp{
 //				return r;
 //			}
 //		}
+		Translate.Tree.Exp con = cond.unEx();
+		if(con instanceof BINOP && ((BINOP)con).binop == BINOP.BITXOR){
+			//((BINOP)cond).left.
+			CJUMP cj =  new CJUMP(CJUMP.NE, ((BINOP)con).left, new CONST(0), f ,t);
+			return new ESEQ(new SEQ(new SEQ(cj,new SEQ(new SEQ(new LABEL(t),
+					new SEQ(new MOVE(new TEMP(r),tExp),
+							new JUMP(join))),
+							new SEQ(new LABEL(f),
+							new SEQ(new MOVE(new TEMP(r),fExp),
+									new JUMP(join))))),
+									new LABEL(join)),new TEMP(r));
+		}
 		
 		return new ESEQ(new SEQ(new SEQ(cond.unCx(t, f),new SEQ(new SEQ(new LABEL(t),
 				new SEQ(new MOVE(new TEMP(r),tExp),
@@ -134,18 +162,22 @@ public class IfThenElseExp extends Exp{
 //                            new LABEL(join)))))));
 //		}
 		
-		Stm aStm = a.unNx();
-		if (aStm == null){
+		Stm aStm;
+		if (a == null){
 		//if (aStm instanceof JUMP){
 			t = join;
+			aStm = null;
 		}else{
+			aStm = a.unNx();
 			aStm = new SEQ(new SEQ(new LABEL(t), aStm), new JUMP(join));
 		}
-		Stm bStm = b.unNx();
-		if (bStm == null){
+		Stm bStm;
+		if (b == null){
 		//if (bStm instanceof JUMP){
 			f = join;
+			bStm = null;
 		}else{
+			bStm = b.unNx();
 			bStm = new SEQ(new SEQ(new LABEL(f), bStm), new JUMP(join));
 		}
 		Stm condStm = cond.unCx(t, f);

@@ -16,18 +16,17 @@ Program(
       VarDecl(IntegerType j
       IntegerLiteral(4)))
      AbstractList(
+      XinuCallStmt(printint
+       AbstractList(
+        IdentifierExpr(k)))
       IfStmt(
-       NotEqExpr(
+       LesserExpr(
         IdentifierExpr(j)
         IdentifierExpr(k))
        BlockStmt(
         AbstractList(
          AssignStmt(
           IdentifierExpr(k)
-          IntegerLiteral(6))))
-       BlockStmt(
-        AbstractList(
-         AssignStmt(
-          IdentifierExpr(k)
-          IntegerLiteral(2))))))
+          IntegerLiteral(5))))
+       null))
      IntegerLiteral(0))))))
