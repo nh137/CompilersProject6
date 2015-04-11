@@ -1,0 +1,993 @@
+/* Copyright (C) 2007-2013, Marquette University.  All rights reserved. */
+//options { DEBUG_PARSER=true; DEBUG_LOOKAHEAD=true; 
+options { OUTPUT_DIRECTORY = "Translate"; } 
+PARSER_BEGIN(ReadTypes)
+package Translate;
+import java.util.LinkedList;
+public class ReadTypes {
+
+	   private static Translate.Symbol.Table/*<Translate.Types.CLASS>*/ classEnv = 
+	   		   		  new Translate.Symbol.Table/*<Translate.Types.CLASS>*/();
+	   private static Translate.Types.CLASS referToClass(String cname)
+	   {
+			Translate.Types.CLASS c = (Translate.Types.CLASS)classEnv.get(cname);
+			if (c == null)
+			{
+				c = new Translate.Types.CLASS(cname);
+				c.instance = new Translate.Types.OBJECT(c, null, null);
+				classEnv.put(cname, c);
+			}
+			return c;
+	   }
+	
+
+} 
+PARSER_END(ReadTypes)
+
+/**************************************************
+ * The MiniJava language lexical spec starts here *
+ **************************************************/
+
+TOKEN_MGR_DECLS :
+{
+    static boolean anyErrors = false;
+    static void error(String msg) {
+        anyErrors = true;
+	System.err.println(msg + ": line " + input_stream.getEndLine()
+			   + ", column " + input_stream.getEndColumn());
+    }
+}
+
+/* WHITE SPACE */
+
+SKIP :
+{
+  " " | "\t" | "\n" | "\r" | "\f"
+}
+
+/* RESERVED WORDS, OPERATORS, etc  */
+
+TOKEN : 
+{
+  < "(" >
+| < ")" >
+| < "Absyn" >
+| < "AddExpr" >
+| < "AndExpr" >
+| < "ArrayExpr" >
+| < "ArrayType" >
+| < "AssignableExpr" >
+| < "AssignStmt" >
+| < "BinOpExpr" >
+| < "BlockStmt" >
+| < "BooleanType" >
+| < "CallExpr" >
+| < "ClassDecl" >
+| < "DivExpr" >
+| < "EqualExpr" >
+| < "Expr" >
+| < "FalseExpr" >
+| < "FieldExpr" >
+| < "Formal" >
+| < "GreaterExpr" >
+| < "IdentifierExpr" >
+| < "IdentifierType" >
+| < "IfStmt" >
+| < "IntegerLiteral" >
+| < "IntegerType" >
+| < "LesserExpr" >
+| < "MethodDecl" >
+| < "MulExpr" >
+| < "NegExpr" >
+| < "NewArrayExpr" >
+| < "NewObjectExpr" >
+| < "NotEqExpr" >
+| < "NotExpr" >
+| < "NullExpr" >
+| < "OrExpr" >
+| < "Program" >
+| < "Stmt" >
+| < "StringLiteral" >
+| < "SubExpr" >
+| < "ThisExpr" >
+| < "ThreadDecl" >
+| < "TrueExpr" >
+| < "Type" >
+| < "VarDecl" >
+| < "VoidDecl" >
+| < "WhileStmt" >
+| < "XinuCallExpr" >
+| < "XinuCallStmt" >
+| < "public_static_void" >
+| < "AbstractList" >
+| < "null" >
+| < "Thread" >
+| < "synchronized" >
+| < "ARRAY" >
+| < "BOOLEAN" >
+| < "CLASS" >
+| < "FIELD" >
+| < "FUNCTION" >
+| < "INT" >
+| < "NIL" >
+| < "OBJECT" >
+| < "RECORD" >
+| < "STRING" >
+| < "VOID" >
+}
+
+/* COMMENTS */
+
+MORE :
+{
+  "//" : IN_SINGLE_LINE_COMMENT
+| <"/**" ~["/"]> { input_stream.backup(1); } : IN_FORMAL_COMMENT
+| "/*" : IN_MULTI_LINE_COMMENT
+}
+
+<IN_SINGLE_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+  <SINGLE_LINE_COMMENT: "\n" | "\r" | "\r\n" > : DEFAULT
+}
+
+<IN_FORMAL_COMMENT>
+SPECIAL_TOKEN :
+{
+  <FORMAL_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_MULTI_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+  <MULTI_LINE_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_SINGLE_LINE_COMMENT,IN_FORMAL_COMMENT,IN_MULTI_LINE_COMMENT>
+MORE :
+{
+  < ~[] >
+}
+
+/* LITERALS */
+
+TOKEN :
+{
+  < INT: ( ["1"-"9"] (["0"-"9"])* | "0" )  >
+| < OCT: ( "0"["0"-"7"] (["0"-"7"])* ) >
+| < HEX: ( "0x"(["0"-"9"]|["A"-"F"]|["a"-"f"]) (["0"-"9"]|["A"-"F"]|["a"-"f"])*) >
+
+| < STRING:
+ "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "\""
+  >
+}
+
+/* IDENTIFIERS */
+
+TOKEN :
+{
+  < ID: <LETTER> (<LETTER>|<DIGIT>)* >
+| < #LETTER: ["A"-"Z","a"-"z","_","$"] >
+| < #DIGIT: ["0"-"9"] >
+}
+
+<DEFAULT>
+SKIP :
+{
+   <~[]> { error("Illegal token"); }
+}
+
+/**************************************************
+ * The MiniJava language grammar starts here      *
+ **************************************************/
+
+//Program(AbstractList<ClassDecl> classes)
+Translate.Absyn.Program Program () :
+{
+    LinkedList<Translate.Absyn.ClassDecl> cl = new LinkedList<Translate.Absyn.ClassDecl>();
+}
+{
+    "Program" "("
+	"AbstractList" "(" (ClassDecl(cl) | ThreadDecl(cl) )*
+	")"
+    ")"
+    <EOF>
+    { return new Translate.Absyn.Program(cl); }
+}
+
+
+//ClassDecl(String name, String parent, LinkedList<VarDecl> fields, LinkedList<MethodDecl> methods)
+void ClassDecl(LinkedList<Translate.Absyn.ClassDecl> cl) :
+{
+	Token name = null, parent = null;
+	String parentName;
+	LinkedList<Translate.Absyn.VarDecl> vl = new LinkedList<Translate.Absyn.VarDecl>();
+	LinkedList<Translate.Absyn.MethodDecl> ml = new LinkedList<Translate.Absyn.MethodDecl>();
+	Translate.Absyn.ClassDecl cd; 
+	Translate.Types.CLASS checktype;
+}
+{
+	"ClassDecl" "(" name = <ID> 
+	( "null" | parent = <ID> )
+	       "AbstractList" "(" (VarDecl(vl))*
+	       ")"
+	       "AbstractList" "("
+	       (MethodDecl(ml))*
+	       ")"
+	checktype = ClassDescriptor()
+	")"
+	{
+		if (null == parent) parentName = null;
+		else parentName = parent.toString();
+		cd = new Translate.Absyn.ClassDecl(name.toString(), parentName, vl, ml);
+		cl.add(cd);
+		cd.checktype = checktype;
+	}
+}
+
+//ThreadDecl(String name, LinkedList<VarDecl> fields, LinkedList<MethodDecl> methods)
+void ThreadDecl(LinkedList<Translate.Absyn.ClassDecl> cl) :
+{
+	Token name = null, parent = null;
+	LinkedList<Translate.Absyn.VarDecl> vl = new LinkedList<Translate.Absyn.VarDecl>();
+	LinkedList<Translate.Absyn.MethodDecl> ml = new LinkedList<Translate.Absyn.MethodDecl>();
+	Translate.Absyn.ThreadDecl td; 
+	Translate.Types.CLASS checktype;
+}
+{
+	"ThreadDecl" "(" name = <ID> "Thread"
+	       "AbstractList" "(" (VarDecl(vl))*
+	       ")"
+	       "AbstractList" "("
+		(MethodDecl(ml) | VoidDecl(ml) )*
+	       ")"
+	checktype = ClassDescriptor()
+	")"
+	{
+		td = new Translate.Absyn.ThreadDecl(name.toString(), vl, ml);
+		cl.add(td);
+		td.checktype = checktype;
+	}
+}
+
+//MethodDecl(Type returnType, String name,
+//		      LinkedList<Formal> params,
+//		      LinkedList<VarDecl> locals,
+//		      LinkedList<Stmt> stmts,
+//		      Expr returnVal)
+void MethodDecl(LinkedList<Translate.Absyn.MethodDecl> ml) :
+{
+	Translate.Absyn.Type type = null;
+	Token name;
+	Translate.Absyn.Formal  param = null;
+	Translate.Absyn.Stmt    stmt  = null;
+	Translate.Absyn.Expr    expr  = null;
+	boolean sync = false;
+	LinkedList<Translate.Absyn.Formal> params   = new LinkedList<Translate.Absyn.Formal>();
+	LinkedList<Translate.Absyn.VarDecl> locals  = new LinkedList<Translate.Absyn.VarDecl>();
+	LinkedList<Translate.Absyn.Stmt> stmts      = new LinkedList<Translate.Absyn.Stmt>();
+	Translate.Absyn.MethodDecl md = null;
+	Translate.Types.FUNCTION checktype;
+}
+{
+	"MethodDecl" "("
+	("public_static_void" | type = Type())
+	 [ "synchronized" { sync = true; } ]
+	 name = <ID>
+	     "AbstractList" "(" ( param = Formal() { params.add(param); } )*
+	     ")"
+	     "AbstractList" "(" ( VarDecl(locals) )*
+	     ")"
+	     "AbstractList" "("	( stmt  = Stmt() { stmts.add(stmt); } )*
+	     ")"
+	     expr = Expr()
+         checktype = FunctionDescriptor()
+	")"
+	{ 
+		md = new Translate.Absyn.MethodDecl(type, sync, name.toString(),
+								  params, locals, stmts, expr); 
+		ml.add(md);
+		md.checktype = checktype;
+		Translate.Types.RECORD r = checktype.formals;
+		for (Translate.Absyn.Formal f : params)
+		{
+			f.checktype = r.get(f.name).type;
+		}
+	}
+}
+
+//VoidDecl(String name,
+//		      LinkedList<VarDecl> locals,
+//		      LinkedList<Stmt> stmts)
+void VoidDecl(LinkedList<Translate.Absyn.MethodDecl> ml) :
+{
+	Token name;
+	Translate.Absyn.Stmt    stmt  = null;
+	LinkedList<Translate.Absyn.Formal> params   = new LinkedList<Translate.Absyn.Formal>();
+	LinkedList<Translate.Absyn.VarDecl> locals  = new LinkedList<Translate.Absyn.VarDecl>();
+	LinkedList<Translate.Absyn.Stmt> stmts      = new LinkedList<Translate.Absyn.Stmt>();
+	Translate.Types.FUNCTION checktype;
+	Translate.Absyn.VoidDecl vd;
+}
+{
+	"VoidDecl" "("
+	 name = <ID>
+	     "AbstractList" "(" ( VarDecl(locals) )*
+	     ")"
+	     "AbstractList" "("	( stmt  = Stmt() { stmts.add(stmt); } )*
+	     ")"
+         checktype = FunctionDescriptor()
+	")"
+	{ 
+		vd = new Translate.Absyn.VoidDecl(name.toString(), locals, stmts);
+		ml.add(vd); 
+		vd.checktype = checktype;
+		Translate.Types.RECORD r = checktype.formals;
+		for (Translate.Absyn.Formal f : params)
+		{
+			f.checktype = r.get(f.name).type;
+		}
+	}
+}
+
+
+//Formal(Type type, String name)
+Translate.Absyn.Formal Formal() :
+{
+	Translate.Absyn.Type type;
+	Token name;
+}
+{
+	"Formal" "("
+	type = Type() name = <ID>
+	")"
+	{ return new Translate.Absyn.Formal(type, name.image); }
+}
+
+//VarDecl(Type type, String name, Expr init)
+void VarDecl(LinkedList<Translate.Absyn.VarDecl> vl) :
+{
+	Translate.Absyn.Type type;
+	Token name;
+	Translate.Absyn.Expr init = null;
+	Translate.Types.Type checktype;
+	Translate.Absyn.VarDecl vd;
+}
+{
+	"VarDecl" "("
+	type = Type() name = <ID> 
+	("null" |  init = Expr() )
+	checktype = TypeDescriptor()
+	")"
+	{
+		vd = new Translate.Absyn.VarDecl(type, name.image, init);
+		vl.add(vd); 
+		vd.checktype = checktype;
+	}
+}
+
+Translate.Absyn.Type Type() : 
+{
+ Translate.Absyn.Type t;
+}
+{
+   (LOOKAHEAD(ArrayType())      t = ArrayType()   |
+    LOOKAHEAD(BooleanType())    t = BooleanType() |
+    LOOKAHEAD(IntegerType())    t = IntegerType() |
+    LOOKAHEAD(IdentifierType()) t = IdentifierType() )
+{
+	return t;
+}
+}
+
+// ArrayType(Type base)
+Translate.Absyn.Type ArrayType() :
+{ Translate.Absyn.Type t; }
+{
+	"ArrayType" "(" t = Type()
+	")"
+	{ return new Translate.Absyn.ArrayType(t); }
+}
+
+// BooleanType() { }
+Translate.Absyn.Type BooleanType() :
+{}
+{
+	"BooleanType"
+	{ return new Translate.Absyn.BooleanType(); }
+}
+
+// IntegerType() { }
+Translate.Absyn.Type IntegerType() :
+{}
+{
+	"IntegerType"
+	{ return new Translate.Absyn.IntegerType(); }
+}
+
+// IdentifierType(String id)
+Translate.Absyn.Type IdentifierType() :
+{ Token t; }
+{
+	"IdentifierType" "(" t = <ID>
+	")"
+	{ return new Translate.Absyn.IdentifierType(t.image); }
+}
+
+Translate.Absyn.Stmt Stmt() : 
+{
+	Translate.Absyn.Stmt s;
+}
+{
+   (
+    s = AssignStmt() |
+    s = BlockStmt() |
+    s = IfStmt() |
+    s = XinuCallStmt() |
+    s = WhileStmt() 
+   )
+   { return s; }
+}
+
+//AssignStmt(AssignableExpr lhs, Expr rhs)
+Translate.Absyn.Stmt AssignStmt() :
+{
+	Translate.Absyn.Expr lhs = null, rhs = null;
+}
+{
+	"AssignStmt" "("
+	lhs = Expr()
+	rhs = Expr()
+	")"
+	{ return new Translate.Absyn.AssignStmt((Translate.Absyn.AssignableExpr) lhs, rhs); }
+}
+
+//BlockStmt(LinkedList<Stmt> stmts)
+Translate.Absyn.Stmt BlockStmt() :
+{
+	Translate.Absyn.Stmt stmt = null;
+	LinkedList<Translate.Absyn.Stmt> stmts      = new LinkedList<Translate.Absyn.Stmt>();
+}
+{
+	"BlockStmt" "("
+			"AbstractList" "("
+			( stmt = Stmt() { stmts.add(stmt); } )*
+			")"
+	")"
+	{ return new Translate.Absyn.BlockStmt(stmts); }
+}
+
+//IfStmt(Expr test, Stmt thenStm, Stmt elseStm)
+Translate.Absyn.Stmt IfStmt() :
+{
+	Translate.Absyn.Expr test;
+	Translate.Absyn.Stmt thenStm, elseStm = null;
+}
+{
+	"IfStmt" "("
+	test = Expr()
+	thenStm = Stmt()
+	( "null" {elseStm = null;}
+	| elseStm = Stmt() )
+	")"
+	{ return new Translate.Absyn.IfStmt(test, thenStm, elseStm); }
+}
+
+//XinuCallStmt(list of Expr)
+Translate.Absyn.Stmt XinuCallStmt() :
+{
+	Token name;
+	Translate.Absyn.Expr arg;
+	LinkedList<Translate.Absyn.Expr> args      = new LinkedList<Translate.Absyn.Expr>();
+}
+{
+	"XinuCallStmt" "(" name = <ID>
+	"AbstractList" "("
+		       ( arg = Expr() {args.add(arg); } )*
+		       ")"
+	")"
+		{ 
+			return new Translate.Absyn.XinuCallStmt(name.image, args);
+		}
+}
+
+//WhileStmt(Expr test, Stmt body)
+Translate.Absyn.Stmt WhileStmt() :
+{
+	Translate.Absyn.Expr test;
+	Translate.Absyn.Stmt body;
+}
+{
+	"WhileStmt" "("
+	test = Expr()
+	body = Stmt()
+	")"
+
+	{ return new Translate.Absyn.WhileStmt(test, body); }
+}
+
+
+Translate.Absyn.Expr Expr() :
+{
+	Translate.Absyn.Expr e;
+}
+{
+	(
+	e = AddExpr()
+	| e = AndExpr()
+	| e = ArrayExpr()
+	| e = CallExpr()
+	| e = DivExpr()
+	| e = EqualExpr()
+	| e = FalseExpr()
+	| e = FieldExpr()
+	| e = GreaterExpr()
+	| e = IdentifierExpr()
+	| e = LesserExpr()
+	| e = MulExpr()
+	| e = NegExpr()
+	| e = NewArrayExpr()
+	| e = NewObjectExpr()
+	| e = NotEqExpr()
+	| e = NotExpr()
+	| e = NullExpr()
+	| e = OrExpr()
+	| e = SubExpr()
+	| e = ThisExpr()
+	| e = TrueExpr()
+	| e = IntegerLiteral()
+	| e = StringLiteral()
+	| e = XinuCallExpr()
+	)
+	{ return e; }
+}
+
+
+//AddExpr(Expr e1, Expr e2)
+Translate.Absyn.AddExpr AddExpr() :
+{
+	Translate.Absyn.Expr e1, e2;
+}
+{
+	"AddExpr" "("
+	e1 = Expr() e2 = Expr()
+	")"
+	{ return new Translate.Absyn.AddExpr(e1, e2); }
+}
+
+//AndExpr(Expr e1, Expr e2)
+Translate.Absyn.AndExpr AndExpr() :
+{
+	Translate.Absyn.Expr e1, e2;
+}
+{
+	"AndExpr" "("
+	e1 = Expr() e2 = Expr()
+	")"
+	{ return new Translate.Absyn.AndExpr(e1, e2); }
+}
+
+//DivExpr(Expr e1, Expr e2)
+Translate.Absyn.DivExpr DivExpr() :
+{
+	Translate.Absyn.Expr e1, e2;
+}
+{
+	"DivExpr" "("
+	e1 = Expr() e2 = Expr()
+	")"
+	{ return new Translate.Absyn.DivExpr(e1, e2); }
+}
+
+//EqualExpr(Expr e1, Expr e2)
+Translate.Absyn.EqualExpr EqualExpr() :
+{
+	Translate.Absyn.Expr e1, e2;
+}
+{
+	"EqualExpr" "("
+	e1 = Expr() e2 = Expr()
+	")"
+	{ return new Translate.Absyn.EqualExpr(e1, e2); }
+}
+
+//GreaterExpr(Expr e1, Expr e2)
+Translate.Absyn.GreaterExpr GreaterExpr() :
+{
+	Translate.Absyn.Expr e1, e2;
+}
+{
+	"GreaterExpr" "("
+	e1 = Expr() e2 = Expr()
+	")"
+	{ return new Translate.Absyn.GreaterExpr(e1, e2); }
+}
+
+//LesserExpr(Expr e1, Expr e2)
+Translate.Absyn.LesserExpr LesserExpr() :
+{
+	Translate.Absyn.Expr e1, e2;
+}
+{
+	"LesserExpr" "("
+	e1 = Expr() e2 = Expr()
+	")"
+	{ return new Translate.Absyn.LesserExpr(e1, e2); }
+}
+
+//MulExpr(Expr e1, Expr e2)
+Translate.Absyn.MulExpr MulExpr() :
+{
+	Translate.Absyn.Expr e1, e2;
+}
+{
+	"MulExpr" "("
+	e1 = Expr() e2 = Expr()
+	")"
+	{ return new Translate.Absyn.MulExpr(e1, e2); }
+}
+
+//NotEqExpr(Expr e1, Expr e2)
+Translate.Absyn.NotEqExpr NotEqExpr() :
+{
+	Translate.Absyn.Expr e1, e2;
+}
+{
+	"NotEqExpr" "("
+	e1 = Expr() e2 = Expr()
+	")"
+	{ return new Translate.Absyn.NotEqExpr(e1, e2); }
+}
+
+//OrExpr(Expr e1, Expr e2)
+Translate.Absyn.OrExpr OrExpr() :
+{
+	Translate.Absyn.Expr e1, e2;
+}
+{
+	"OrExpr" "("
+	e1 = Expr() e2 = Expr()
+	")"
+	{ return new Translate.Absyn.OrExpr(e1, e2); }
+}
+
+//SubExpr(Expr e1, Expr e2)
+Translate.Absyn.SubExpr SubExpr() :
+{
+	Translate.Absyn.Expr e1, e2;
+}
+{
+	"SubExpr" "("
+	e1 = Expr() e2 = Expr()
+	")"
+	{ return new Translate.Absyn.SubExpr(e1, e2); }
+}
+
+//ArrayExpr(Expr target, Expr index)
+Translate.Absyn.ArrayExpr ArrayExpr() :
+{
+	Translate.Absyn.Expr target, index;
+}
+{
+	"ArrayExpr" "("
+	target = Expr() index = Expr()
+	")"
+	{ return new Translate.Absyn.ArrayExpr(target, index); }
+}
+
+//CallExpr(Expr target, String method, LinkedList<Expr> args)
+Translate.Absyn.CallExpr CallExpr() :
+{
+	Translate.Absyn.Expr target;
+	Token method;
+	Translate.Absyn.Expr arg;
+	LinkedList<Translate.Absyn.Expr> args = new LinkedList<Translate.Absyn.Expr>();
+	Token index;
+}
+{
+	"CallExpr" "("
+	target = Expr() method = <ID>
+	"AbstractList" "("
+		       ( arg = Expr() {args.add(arg); } )*
+		       ")"
+	index = <INT>
+	")"
+	{ 
+	  Translate.Absyn.CallExpr ce = new Translate.Absyn.CallExpr(target, method.image, args);
+	  ce.typeIndex = new Integer(index.toString());
+	  return ce;
+	}
+}
+
+//FalseExpr()
+Translate.Absyn.FalseExpr FalseExpr() :
+{
+}
+{
+	"FalseExpr"
+	{ return new Translate.Absyn.FalseExpr(); }
+}
+
+//FieldExpr(Expr target, String field)
+Translate.Absyn.FieldExpr FieldExpr() :
+{
+	Translate.Absyn.Expr target;
+	Token field;
+	Token index;
+}
+{
+	"FieldExpr" "("
+	target = Expr() field = <ID>
+	index = <INT>
+	")"
+	{
+		Translate.Absyn.FieldExpr fe = new Translate.Absyn.FieldExpr(target, field.image);
+		fe.typeIndex = new Integer(index.toString());
+		return fe;
+	}
+}
+
+//IdentifierExpr(String id)
+Translate.Absyn.IdentifierExpr IdentifierExpr() :
+{
+	Token id;
+}
+{
+	"IdentifierExpr" "("
+	id = <ID>
+	")"
+	{ return new Translate.Absyn.IdentifierExpr(id.image); }
+}
+
+
+//NegExpr(Expr e1)
+Translate.Absyn.NegExpr NegExpr() :
+{
+	Translate.Absyn.Expr e1;
+}
+{
+	"NegExpr" "("
+	e1 = Expr()
+	")"
+	{return new Translate.Absyn.NegExpr(e1); }
+}
+
+
+//NewArrayExpr(Type type, LinkedList<Expr> dimensions)
+Translate.Absyn.NewArrayExpr NewArrayExpr() :
+{
+	Translate.Absyn.Type type;
+	Translate.Absyn.Expr expr;
+	LinkedList<Translate.Absyn.Expr> dimensions = new LinkedList<Translate.Absyn.Expr>();
+}
+{
+	"NewArrayExpr" "("
+	type = Type()
+	"AbstractList" "("
+		       ( expr = Expr() { dimensions.add(expr); } 
+		       | "null" { dimensions.add(null); } )*
+		       ")"
+	")"
+	{ return new Translate.Absyn.NewArrayExpr(type, dimensions); }
+}
+
+//NewObjectExpr(Type type)
+Translate.Absyn.NewObjectExpr NewObjectExpr() :
+{
+	Translate.Absyn.Type type;
+}
+{
+	"NewObjectExpr" "("
+	type = Type()
+	")"
+	{ return new Translate.Absyn.NewObjectExpr(type); }
+}
+
+//NotExpr(Expr e1)
+Translate.Absyn.NotExpr NotExpr() :
+{
+	Translate.Absyn.Expr e1;
+}
+{
+	"NotExpr" "("
+	e1 = Expr()
+	")"
+	{ return new Translate.Absyn.NotExpr(e1); }
+}
+
+//NullExpr()
+Translate.Absyn.NullExpr NullExpr() :
+{
+}
+{
+	"NullExpr"
+	{ return new Translate.Absyn.NullExpr(); }
+}
+
+//XinuCallExpr(list of Expr)
+Translate.Absyn.XinuCallExpr XinuCallExpr() :
+{
+	Token name;
+	Translate.Absyn.Expr arg;
+	LinkedList<Translate.Absyn.Expr> args      = new LinkedList<Translate.Absyn.Expr>();
+}
+{
+	"XinuCallExpr" "(" name = <ID>
+	"AbstractList" "("
+		       ( arg = Expr() {args.add(arg); } )*
+		       ")"
+	")"
+		{ 
+			return new Translate.Absyn.XinuCallExpr(name.image, args);
+		}
+}
+
+//ThisExpr()
+Translate.Absyn.ThisExpr ThisExpr() :
+{}
+{
+	"ThisExpr"
+	{ return new Translate.Absyn.ThisExpr(); }
+}
+
+//TrueExpr()
+Translate.Absyn.TrueExpr TrueExpr() :
+{}
+{
+	"TrueExpr"
+	{ return new Translate.Absyn.TrueExpr(); }
+}
+
+//IntegerLiteral(int value)
+Translate.Absyn.IntegerLiteral IntegerLiteral() :
+{ Token t; }
+{
+	"IntegerLiteral" "("
+	t=<INT>
+	")"
+	{ return new Translate.Absyn.IntegerLiteral(new Integer(t.toString())); }
+}
+
+
+//StringLiteral(String value)
+Translate.Absyn.StringLiteral StringLiteral() :
+{ Token t; }
+{
+	"StringLiteral" "("
+	t=<STRING>
+	")"
+	{ return new Translate.Absyn.StringLiteral(t.toString()); }
+}
+
+Translate.Types.Type TypeDescriptor() :
+{
+	Translate.Types.Type t;
+}
+{
+	(
+	t = ArrayDescriptor()
+	| t = ClassDescriptor()
+	| t = FieldDescriptor()
+	| t = FunctionDescriptor()
+	| t = ObjectDescriptor()
+	| t = RecordDescriptor()
+	| "BOOLEAN" { return new Translate.Types.BOOLEAN(); }
+	| "INT"     { return new Translate.Types.INT();     }
+	| "NIL"     { return new Translate.Types.NIL();     }
+	| "STRING"  { return new Translate.Types.STRING();  }
+	| "VOID"    { return new Translate.Types.VOID();    }
+	)
+	{ return t; }
+}
+
+Translate.Types.ARRAY ArrayDescriptor() :
+{
+	Translate.Types.Type t;
+}
+{
+	"ARRAY" "("
+	t = TypeDescriptor()
+	")"
+	{ return new Translate.Types.ARRAY(t); }
+}
+
+Translate.Types.CLASS ClassDescriptor() :
+{
+	Token cname = null, pname = null, oname = null;
+	Translate.Types.RECORD methods, fields, imethods, ifields;
+	Translate.Types.OBJECT instance;
+	Translate.Types.CLASS c;
+}
+{
+	"CLASS" "("
+	cname = <ID>
+	( "null" | pname = "Thread" | pname = <ID> )
+	methods  = RecordDescriptor()
+	fields   = RecordDescriptor()
+		"OBJECT" "("
+		oname = <ID>
+		imethods = RecordDescriptor()
+		ifields  = RecordDescriptor()
+		")"
+	")"
+	{
+		c = referToClass(cname.toString());
+		if (pname != null)
+		{ c.parent = referToClass(pname.toString()); }
+		c.methods  = methods;
+		c.fields   = fields;
+		c.instance.methods = imethods;
+		c.instance.fields  = ifields;
+		return c;
+	}
+	
+}
+
+Translate.Types.FIELD FieldDescriptor() :
+{
+	Token index = null, fname = null;
+	Translate.Types.Type t;
+}
+{
+	"FIELD" "("
+	index = <INT>
+	fname = <ID>
+	t     = TypeDescriptor()
+	")"
+	{
+		return new Translate.Types.FIELD(t, fname.toString(), 
+			   	   				  new Integer(index.toString()));
+	}
+}
+
+
+Translate.Types.FUNCTION FunctionDescriptor() :
+{
+	Token name = null;
+	Translate.Types.Type self = null, result = null;
+	Translate.Types.RECORD formals = null;
+}
+{
+	"FUNCTION" "("
+	name    = <ID>
+	self    = TypeDescriptor()
+	formals = RecordDescriptor()
+	result  = TypeDescriptor()
+	")"
+	{
+		return new Translate.Types.FUNCTION(name.toString(), self, formals, result);
+	}
+}
+
+Translate.Types.OBJECT ObjectDescriptor() :
+{
+	Token name;
+}
+{
+	"OBJECT" "("
+	name = <ID>
+	")"
+	{ return referToClass(name.toString()).instance; }
+}
+
+
+Translate.Types.RECORD RecordDescriptor() :
+{
+	Translate.Types.RECORD r = new Translate.Types.RECORD();
+	Translate.Types.FIELD  f = null;
+}
+{
+	"RECORD" "("
+	( f = FieldDescriptor() { r.put(f.type, f.name);} )*
+	")"
+	{ return r; }
+}

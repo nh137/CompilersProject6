@@ -1,0 +1,63 @@
+DataFrag(
+	.data
+Main_vtable:
+	.word Main.main
+
+)
+DataFrag(
+	.data
+Food_vtable:
+	.word Food.testMethod
+
+)
+DataFrag(
+	.data
+Pizza_vtable:
+	.word Food.testMethod
+	.word Pizza.foo
+
+)
+ProcFrag(
+MipsFrame(
+main:
+Formals(InReg(t32)
+	InReg(t33)
+	)
+Actuals(InReg(t4)
+	InReg(t5)
+	)
+BadPtr(_BADPTR)
+BadSub(_BADSUB)
+)
+MOVE(
+ TEMP(t2)
+ CONST(0))
+)
+ProcFrag(
+MipsFrame(
+Food.testMethod:
+Formals(InReg(t34)
+	)
+Actuals(InReg(t4)
+	)
+BadPtr(_BADPTR)
+BadSub(_BADSUB)
+)
+MOVE(
+ TEMP(t2)
+ CONST(0))
+)
+ProcFrag(
+MipsFrame(
+Pizza.foo:
+Formals(InReg(t35)
+	)
+Actuals(InReg(t4)
+	)
+BadPtr(_BADPTR)
+BadSub(_BADSUB)
+)
+MOVE(
+ TEMP(t2)
+ CONST(2345))
+)
