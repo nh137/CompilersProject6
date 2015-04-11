@@ -1,4 +1,4 @@
-class ErrorMsg 
+class Assem.ErrorMsg 
 {
 	boolean anyErrors;
 	void complain(String msg)

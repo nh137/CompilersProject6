@@ -1,4 +1,4 @@
-package Semant.Visit;
+package Assem.Semant.Visit;
 
 /**
  * AbsynPrintVisitor.java

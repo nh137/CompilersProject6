@@ -1,8 +1,8 @@
-package Translate.Translate;
+package Assem.Translate.Translate;
 
-import Translate.Temp.Label;
-import Translate.Temp.Temp;
-import Translate.Tree.*;
+import Assem.Translate.Temp.Label;
+import Assem.Translate.Temp.Temp;
+import Assem.Translate.Tree.*;
 
 public abstract class Cx extends Exp{
 	
@@ -14,7 +14,7 @@ public abstract class Cx extends Exp{
 	//abstract Stm unCx(Label t, Label f);
 	
 	@Override
-	public Translate.Tree.Exp unEx() {
+	public Assem.Translate.Tree.Exp unEx() {
 		Temp r = new Temp();
 		Label t = new Label();
 		Label f = new Label();

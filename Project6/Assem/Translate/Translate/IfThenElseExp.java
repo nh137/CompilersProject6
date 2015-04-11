@@ -1,6 +1,6 @@
-package Translate.Translate;
-import Translate.Temp.*;
-import Translate.Tree.*;
+package Assem.Translate.Translate;
+import Assem.Translate.Temp.*;
+import Assem.Translate.Tree.*;
 
 public class IfThenElseExp extends Exp{
 	public Exp cond, a, b;
@@ -101,8 +101,8 @@ public class IfThenElseExp extends Exp{
 		//SEQ s1 = new SEQ(new MOVE(new TEMP(r)n, e2.unEx()), JUMP(new NAME(join), new java.util.LinkedList<Label>()));
 		//SEQ s2 = new SEQ()
 		Temp r = new Temp();
-		Translate.Tree.Exp tExp = a.unEx();
-		Translate.Tree.Exp fExp = b.unEx();
+		Assem.Translate.Tree.Exp tExp = a.unEx();
+		Assem.Translate.Tree.Exp fExp = b.unEx();
 		
 		//maybe
 		if (tExp == null)

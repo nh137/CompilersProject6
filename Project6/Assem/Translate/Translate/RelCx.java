@@ -1,21 +1,21 @@
-package Translate.Translate;
+package Assem.Translate.Translate;
 
-import Translate.Temp.Label;
-import Translate.Temp.Temp;
-import Translate.Tree.CONST;
-import Translate.Tree.ESEQ;
-import Translate.Tree.LABEL;
-import Translate.Tree.MOVE;
-import Translate.Tree.SEQ;
-import Translate.Tree.Stm;
-import Translate.Tree.TEMP;import Translate.Tree.CJUMP;
+import Assem.Translate.Temp.Label;
+import Assem.Translate.Temp.Temp;
+import Assem.Translate.Tree.CONST;
+import Assem.Translate.Tree.ESEQ;
+import Assem.Translate.Tree.LABEL;
+import Assem.Translate.Tree.MOVE;
+import Assem.Translate.Tree.SEQ;
+import Assem.Translate.Tree.Stm;
+import Assem.Translate.Tree.TEMP;import Translate.Tree.CJUMP;
 
 public class RelCx extends Cx{
-	public  Translate.Tree.Exp le;
+	public  Assem.Translate.Tree.Exp le;
 	public  int operator;
-	public  Translate.Tree.Exp re;
+	public  Assem.Translate.Tree.Exp re;
 	
-	public RelCx(int op, Translate.Tree.Exp l, Translate.Tree.Exp r){
+	public RelCx(int op, Assem.Translate.Tree.Exp l, Assem.Translate.Tree.Exp r){
 		operator = op;
 		le = l;
 		re = r;

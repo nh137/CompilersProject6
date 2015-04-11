@@ -1,4 +1,4 @@
-package Semant.Visit;
+package Assem.Semant.Visit;
 import Semant.Absyn.*;
 //import Semant.Types.*;
 import Semant.Symbol.*;

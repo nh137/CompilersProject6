@@ -1,14 +1,14 @@
-package Translate.Translate;
+package Assem.Translate.Translate;
 
-import Translate.Temp.Label;
-import Translate.Tree.*;
+import Assem.Translate.Temp.Label;
+import Assem.Translate.Tree.*;
 
 public class Nx extends Exp{
 	
 	public Stm stm;
 	public Nx(Stm s) {stm=s;}
 	
-	public Translate.Tree.Exp unEx() { 
+	public Assem.Translate.Tree.Exp unEx() { 
 		return null;
 	}
 	public Stm unNx() {return stm;}

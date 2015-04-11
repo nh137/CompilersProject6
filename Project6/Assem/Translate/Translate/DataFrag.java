@@ -1,17 +1,17 @@
-package Translate.Translate;
-import Translate.Temp.Label;
-import Translate.Tree.*;
-import Translate.Frame.*;
+package Assem.Translate.Translate;
+import Assem.Translate.Temp.Label;
+import Assem.Translate.Tree.*;
+import Assem.Translate.Frame.*;
 import java.util.ArrayList;
 public class DataFrag extends Frag{
 	public String data;
 	public Label label;
-	public ArrayList<Translate.Types.FUNCTION> flist;
-	public Translate.Types.CLASS c;
+	public ArrayList<Assem.Translate.Types.FUNCTION> flist;
+	public Assem.Translate.Types.CLASS c;
 	
 	public DataFrag(String s){
 		data = s;
-		flist = new ArrayList<Translate.Types.FUNCTION>();
+		flist = new ArrayList<Assem.Translate.Types.FUNCTION>();
 		label = null;
 	}
 	
@@ -32,9 +32,9 @@ public class DataFrag extends Frag{
 		if(label == null){
 			
 			s+=data+"_vtable:\n";
-			for(Translate.Types.FUNCTION f : flist){
-				Translate.Types.OBJECT o = (Translate.Types.OBJECT)f.self;
-				Translate.Types.CLASS c = o.myClass;
+			for(Assem.Translate.Types.FUNCTION f : flist){
+				Assem.Translate.Types.OBJECT o = (Assem.Translate.Types.OBJECT)f.self;
+				Assem.Translate.Types.CLASS c = o.myClass;
 				s+="\t.word "+c.name+"."+f.name;
 				s+="\n";
 			}

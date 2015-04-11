@@ -1,7 +1,7 @@
-package Semant.Visit;
-import Semant.Absyn.*;
+package Assem.Semant.Visit;
+import Assem.Semant.Absyn.*;
 //import Semant.Types.*;
-import Semant.Symbol.*;
+import Assem.Semant.Symbol.*;
 
 public class TypeVisitor implements Visitor2{
 	

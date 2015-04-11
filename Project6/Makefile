@@ -1,4 +1,4 @@
-PARSER   = ReadTypes
+PARSER   = ReadFrags
 
 JAVAC    = javac
 JAVA     = java
@@ -8,69 +8,69 @@ JJDOC    = jjdoc
 
 JAVAC_FLAGS = -Xdepend
 
-JAVACCGEN = Translate/SimpleCharStream.java Translate/ParseException.java \
-        Translate/$(PARSER).java Translate/$(PARSER)Constants.java \
-        Translate/$(PARSER)TokenManager.java Translate/Token.java \
-        Translate/TokenMgrError.java
+JAVACCGEN = Assem/SimpleCharStream.java Assem/ParseException.java \
+        Assem/$(PARSER).java Assem/$(PARSER)Constants.java \
+        Assem/$(PARSER)TokenManager.java Assem/Token.java \
+        Assem/TokenMgrError.java
 
-ABSYN    = Translate/Absyn/Absyn.java Translate/Absyn/Expr.java \
-	Translate/Absyn/AddExpr.java Translate/Absyn/ArrayExpr.java \
-	Translate/Absyn/ArrayType.java Translate/Absyn/AssignableExpr.java \
-	Translate/Absyn/AssignStmt.java Translate/Absyn/BinOpExpr.java \
-	Translate/Absyn/BlockStmt.java Translate/Absyn/BooleanType.java \
-	Translate/Absyn/CallExpr.java Translate/Absyn/ClassDecl.java \
-	Translate/Absyn/DivExpr.java Translate/Absyn/EqualExpr.java \
-	Translate/Absyn/FalseExpr.java Translate/Absyn/FieldExpr.java \
-	Translate/Absyn/Formal.java Translate/Absyn/GreaterExpr.java \
-	Translate/Absyn/IdentifierExpr.java Translate/Absyn/IdentifierType.java \
-	Translate/Absyn/IfStmt.java Translate/Absyn/IntegerLiteral.java \
-	Translate/Absyn/IntegerType.java Translate/Absyn/LesserExpr.java \
-	Translate/Absyn/MainClassDecl.java Translate/Absyn/MethodDecl.java \
-	Translate/Absyn/MulExpr.java Translate/Absyn/NegExpr.java \
-	Translate/Absyn/NewArrayExpr.java Translate/Absyn/NewObjectExpr.java \
-	Translate/Absyn/NotEqExpr.java Translate/Absyn/NotExpr.java \
-	Translate/Absyn/NullExpr.java Translate/Absyn/OrExpr.java \
-	Translate/Absyn/PrintVisitor.java Translate/Absyn/Program.java \
-	Translate/Absyn/Stmt.java Translate/Absyn/StringLiteral.java \
-	Translate/Absyn/SubExpr.java Translate/Absyn/ThisExpr.java \
-	Translate/Absyn/ThreadDecl.java Translate/Absyn/TrueExpr.java \
-	Translate/Absyn/Type.java Translate/Absyn/VarDecl.java \
-	Translate/Absyn/VoidDecl.java Translate/Absyn/WhileStmt.java \
-	Translate/Absyn/XinuCallExpr.java Translate/Absyn/XinuCallStmt.java
+ABSYN    = Assem/Translate/Absyn/Absyn.java Assem/Translate/Absyn/Expr.java \
+	Assem/Translate/Absyn/AddExpr.java Assem/Translate/Asyn/ArrayExpr.java \
+	Assem/Translate/Absyn/ArrayType.java Assem/Translate/Absyn/AssignableExpr.java \
+	Assem/Translate/Absyn/AssignStmt.java Assem/Translate/Absyn/BinOpExpr.java \
+	Assem/Translate/Absyn/BlockStmt.java Assem/Translate/Absyn/BooleanType.java \
+	Assem/Translate/Absyn/CallExpr.java Assem/Translate/Absyn/ClassDecl.java \
+	Assem/Translate/Absyn/DivExpr.java Assem/Translate/Absyn/EqualExpr.java \
+	Assem/Translate/Absyn/FalseExpr.java Assem/Translate/Absyn/FieldExpr.java \
+	Assem/Translate/Absyn/Formal.java Assem/Translate/Absyn/GreaterExpr.java \
+	Assem/Translate/Absyn/IdentifierExpr.java Assem/Translate/Absyn/IdentifierType.java \
+	Assem/Translate/Absyn/IfStmt.java Assem/Translate/Absyn/IntegerLiteral.java \
+	Assem/Translate/Absyn/IntegerType.java Assem/Translate/Absyn/LesserExpr.java \
+	Assem/Translate/Absyn/MainClassDecl.java Assem/Translate/Absyn/MethodDecl.java \
+	Assem/Translate/Absyn/MulExpr.java Assem/Translate/Absyn/NegExpr.java \
+	Assem/Translate/Absyn/NewArrayExpr.java Assem/Translate/Absyn/NewObjectExpr.java \
+	Assem/Translate/Absyn/NotEqExpr.java Assem/Translate/Absyn/NotExpr.java \
+	Assem/Translate/Absyn/NullExpr.java Assem/Translate/Absyn/OrExpr.java \
+	Assem/Translate/Absyn/PrintVisitor.java Assem/Translate/Absyn/Program.java \
+	Assem/Translate/Absyn/Stmt.java Assem/Translate/Absyn/StringLiteral.java \
+	Assem/Translate/Absyn/SubExpr.java Assem/Translate/Absyn/ThisExpr.java \
+	Assem/Translate/Absyn/ThreadDecl.java Assem/Translate/Absyn/TrueExpr.java \
+	Assem/Translate/Absyn/Type.java Assem/Translate/Absyn/VarDecl.java \
+	Assem/Translate/Absyn/VoidDecl.java Assem/Translate/Absyn/WhileStmt.java \
+	Assem/Translate/Absyn/XinuCallExpr.java Assem/Translate/Absyn/XinuCallStmt.java
 
-VISIT    = Translate/Visit/Visitable.java Translate/Visit/Visitor.java \
+VISIT    = Assem/Translate/Visit/Visitable.java Assem/Translate/Visit/Visitor.java \
 	
-TYPES	 = Translate/Types/ARRAY.java Translate/Types/BOOLEAN.java \
-	Translate/Types/CLASS.java Translate/Types/FIELD.java \
-	Translate/Types/FUNCTION.java Translate/Types/INT.java \
-	Translate/Types/NIL.java Translate/Types/OBJECT.java \
-	Translate/Types/RECORD.java Translate/Types/STRING.java \
-	Translate/Types/Type.java Translate/Types/VOID.java
+TYPES	 = Assem/Translate/Types/ARRAY.java Assem/Translate/Types/BOOLEAN.java \
+	Assem/Translate/Types/CLASS.java Assem/Translate/Types/FIELD.java \
+	Assem/Translate/Types/FUNCTION.java Assem/Translate/Types/INT.java \
+	Assem/Translate/Types/NIL.java Assem/Translate/Types/OBJECT.java \
+	Assem/Translate/Types/RECORD.java Assem/Translate/Types/STRING.java \
+	Assem/Translate/Types/Type.java Assem/Translate/Types/VOID.java
 	
-FRAME	= Translate/Frame/Access.java Translate/Frame/Frame.java
+FRAME	= Assem/Translate/Frame/Access.java Assem/Translate/Frame/Frame.java
 
-MIPS	= Translate/Mips/InFrame.java Translate/Mips/InReg.java \
-	Translate/Mips/MipsFrame.java
+MIPS	= Assem/Translate/Mips/InFrame.java Assem/Translate/Mips/InReg.java \
+	Assem/Translate/Mips/MipsFrame.java
 	
-TRANSLATE	=	Translate/Translate/Cx.java Translate/Translate/DataFrag.java \
-	Translate/Translate/Ex.java Translate/Translate/Exp.java \
-	Translate/Translate/Frag.java Translate/Translate/IfThenElseExp.java \
-	Translate/Translate/Nx.java Translate/Translate/ProcFrag.java \
-	Translate/Translate/RelCx.java
+TRANSLATE	=	Assem/Translate/Translate/Cx.java Assem/Translate/Translate/DataFrag.java \
+	Assem/Translate/Translate/Ex.java Assem/Translate/Translate/Exp.java \
+	Assem/Translate/Translate/Frag.java Assem/Translate/Translate/IfThenElseExp.java \
+	Assem/Translate/Translate/Nx.java Assem/Translate/Translate/ProcFrag.java \
+	Assem/Translate/Translate/RelCx.java
 	
-TREE	=	Translate/Tree/BINOP.java Translate/Tree/CALL.java \
-	Translate/Tree/CJUMP.java Translate/Tree/CONST.java \
-	Translate/Tree/ESEQ.java Translate/Tree/Exp.java \
-	Translate/Tree/EXP.java Translate/Tree/Hospitable.java \
-	Translate/Tree/IntVisitor.java Translate/Tree/JUMP.java \
-	Translate/Tree/LABEL.java Translate/Tree/MEM.java \
-	Translate/Tree/MOVE.java Translate/Tree/NAME.java \
-	Translate/Tree/Print.java Translate/Tree/SEQ.java \
-	Translate/Tree/Stm.java Translate/Tree/TEMP.java
+TREE	=	Assem/Translate/Tree/BINOP.java Assem/Translate/Tree/CALL.java \
+	Assem/Translate/Tree/CJUMP.java Assem/Translate/Tree/CONST.java \
+	Assem/Translate/Tree/ESEQ.java Assem/Translate/Tree/Exp.java \
+	Assem/Translate/Tree/EXP.java Assem/Translate/Tree/Hospitable.java \
+	Assem/Translate/Tree/IntVisitor.java Assem/Translate/Tree/JUMP.java \
+	Assem/Translate/Tree/LABEL.java Assem/Translate/Tree/MEM.java \
+	Assem/Translate/Tree/MOVE.java Assem/Translate/Tree/NAME.java \
+	Assem/Translate/Tree/Print.java Assem/Translate/Tree/SEQ.java \
+	Assem/Translate/Tree/Stm.java Assem/Translate/Tree/TEMP.java
 
-SYMBOL	= Translate/Symbol/Symbol.java Translate/Symbol/Table.java
+SYMBOL	= Assem/Translate/Symbol/Symbol.java Assem/Translate/Symbol/Table.java
 
-SRCS     =  $(ABSYN) $(SYMBOL)  $(TYPES) $(VISIT) Translate/$(PARSER).java Translate/Main.java Translate/Translator/Translator.java Translate/Util/BoolList.java
+SRCS     =   $(ABSYN) $(SYMBOL) $(VISIT) $(TYPES) Assem/$(PARSER).java Assem/Main.java Assem/Translate/Translator/Translator.java Assem/Translate/Util/BoolList.java
 
 all:  $(SRCS:.java=.class)
 
@@ -79,11 +79,11 @@ all:  $(SRCS:.java=.class)
 
 
 
-Translate/$(PARSER).java: Translate/$(PARSER).jj
+Assem/$(PARSER).java: Assem/$(PARSER).jj
 	$(JAVACC)  $<
 
-parser: Translate/$(PARSER).class Translate/$(PARSER)Constants.class \
-	Translate/$(PARSER)TokenManager.class Translate/ParseException.class
+parser: $(PARSER).class $(PARSER)Constants.class \
+	$(PARSER)TokenManager.class ParseException.class
 
 main: $(PARSER).class Main.class
 

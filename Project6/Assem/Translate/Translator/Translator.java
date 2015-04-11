@@ -1,14 +1,14 @@
-package Translate.Translator;
-import Translate.Absyn.*;
-import Translate.Types.*;
-import Translate.Translate.*;
-import Translate.Frame.*;
-import Translate.Mips.*;
-import Translate.Symbol.*;
-import Translate.Tree.*;
-import Translate.Temp.*;
-import Translate.Symbol.*;
-import Translate.*;
+package Assem.Translate.Translator;
+import Assem.Translate.Absyn.*;
+import Assem.Translate.Types.*;
+import Assem.Translate.Translate.*;
+import Assem.Translate.Frame.*;
+import Assem.Translate.Mips.*;
+import Assem.Translate.Symbol.*;
+import Assem.Translate.Tree.*;
+import Assem.Translate.Temp.*;
+import Assem.Translate.Symbol.*;
+import Assem.Translate.*;
 import java.util.*;
 public class Translator
 {

@@ -1,11 +1,11 @@
-package Translate.Translate;
-import Translate.Temp.*;
-import Translate.Tree.*;
+package Assem.Translate.Translate;
+import Assem.Translate.Temp.*;
+import Assem.Translate.Tree.*;
 public abstract class Exp {
 	
-	public abstract Translate.Tree.Exp unEx();
+	public abstract Assem.Translate.Tree.Exp unEx();
 	
-	public abstract Translate.Tree.Stm unNx();
+	public abstract Assem.Translate.Tree.Stm unNx();
 	
-	public abstract Translate.Tree.Stm unCx(Label t, Label f);
+	public abstract Assem.Translate.Tree.Stm unCx(Label t, Label f);
 }
